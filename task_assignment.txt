@@ -1,0 +1,10 @@
+Theodore
+-GUI
+
+
+Brian
+-website fetch
+
+
+Pete
+-xml parsing/data read
