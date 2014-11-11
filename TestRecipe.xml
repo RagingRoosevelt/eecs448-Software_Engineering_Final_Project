@@ -1,0 +1,19 @@
+<recipe name="test recipe">
+    <servings>5</servings>
+    <baketime>
+        <time>4</time>
+        <unit>hours</unit>
+    </baketime>
+    <baketemp>
+        <temp>350</temp>
+        <unit>F</unit>
+    </baketemp>
+    <ingredients>
+        <ingredient name="pepper" quanitity="4" unit="cups"/>
+        <ingredient name="salt" quanitity="3" unit="tsp"/>
+    </ingredients> 
+    <procedure>
+        This will show up as several paragraphs.  Everything here should be accepted.  Each paragraph will be separated by a new line and a tab.
+	    Such as the separation between these two paragraphs.  The newline should be preserved.
+    </procedure>
+</recipe>
