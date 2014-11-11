@@ -1,10 +1,10 @@
 Theodore
--GUI
+-GUI (added 2014-11-11, completed )
 
 
 Brian
--website fetch
+-website fetch (added 2014-11-11, completed )
 
 
 Pete
--xml parsing/data read
+-xml parsing/data read (added 2014-11-11, completed )
