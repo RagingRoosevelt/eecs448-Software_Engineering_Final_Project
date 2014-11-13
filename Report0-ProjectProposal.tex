@@ -1,0 +1,57 @@
+\documentclass{article}
+
+%\author{Brian Kennedy, Pete Koehn, Theodore Lindsey}
+%\title{Final Group Project Proposal, EECS 448}
+
+\usepackage{ifpdf} 
+\usepackage{mla}
+
+\usepackage{setspace}
+\onehalfspacing
+
+\begin{document}
+%\maketitle
+\begin{mla}{Brian Kennedy, Pete Koehn, Theodore Lindsey}{}{Chakrabarti}{EECS 448}{\today}{Final Group Project Proposal}
+
+\
+
+For our final group project, we would like to develop an electronic cookbook assembler. Assembled cookbooks will be in the PDF format.  The assembler will scan a user-specified directory for recipes stored in .txt format with specific markup and then lay out the design of each recipe, build a table of contents, an index by name and an index by type of food (possibly other types of indices depending on supplied metadata).  The software will have a GUI to facilitate user interaction.  It will be programmed in Python.
+
+The final software will be deliverable both as a python code file and as an executable.  As such, it will run on any of the three prominent computer platforms.  Sample recipe .txt files will be included with the software.  The application will provide a minimum of the following features (listed in order of importance):
+
+\begin{itemize}
+\item Recipes will be loaded into the application by reading specifically formatted text files. Each text file must include fields such as ingredients, preparation time, cook/bake time, instructions, servings, metadata, etc and include some markup to designate each section.
+
+\item The software will be able to instruct users in the markup it expects in the .txt files it scans.
+
+\item Users may use the application’s GUI to add recipes directly to the cookbook and to add a corresponding text file to the given directory.
+
+\item The user can add metadata (type of food, preparation techniques, number of servings, name) to recipes.  Changes will sync with the corresponding text file.
+
+\item The user can modify recipes (add/remove ingredients, adjust quantity of ingredients, adjust preparation instructions, cook times, etc).  Changes will sync with the corresponding text files.
+
+\item The user can select which recipes will be included in the compiled cookbook.
+
+\item The application can be used, at any time, to generate a PDF of the contents of the cookbook. The PDF will include a Table of Contents and several indices for locating recipes based on different parameters (course, style, ethnicity, etc.).
+\end{itemize}
+
+\noindent Time permitting, several additional features may be added:
+
+\begin{itemize}
+
+\item Fetch recipes from several websites given a recipe URL (allrecipes.com, joyofbaking.com, foodnetwork.com, etc).
+
+\item Support for several cookbooks based on the same root directory, based on user selection of included recipes on a per-book basis.
+
+\item Assembled cookbooks will be provided in the \LaTeX format.
+
+\item Convert directory of text files into a more useful database or “database” (SQLite?, xml?).
+
+\item Given a set of user-provided ingredients and a type of food, find recipes that are compatible with ingredients on hand.
+\end{itemize}
+
+
+
+
+\end{mla}
+\end{document}
