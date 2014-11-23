@@ -1,10 +1,28 @@
 Theodore
--GUI (added 2014-11-11, completed )
+-GUI (view class), ongoing (added 2014-11-11, completed )
 
 
 Brian
--website fetch (added 2014-11-11, completed )
+-website fetch (model class) (added 2014-11-11, completed )
 
 
 Pete
--xml parsing/data read (added 2014-11-11, completed )
+-xml parsing/data read (model class) (added 2014-11-11, completed )
+
+
+
+Unclaimed
+-write help and formatting instructions
+-display help and formatting instructions
+-recipe selection system
+-pdf compiler
+-recipe formatter
+-recipe write
+-table of contents builder
+-manual recipe add (gui input)
+-manual recipe add (model)
+-manual recipe modify (gui input)
+-manual recipe modify (model)
+
+Finished
+-recipe file formatting (2014-11-11) - all
