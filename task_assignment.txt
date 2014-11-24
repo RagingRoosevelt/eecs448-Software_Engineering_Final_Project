@@ -1,5 +1,8 @@
 Theodore
--GUI (view class), ongoing (added 2014-11-11, completed )
+-GUI layout and view(view class), ongoing (added 2014-11-11, completed )
+-manual recipe add (gui input)
+-manual recipe modify (gui input)
+-display help and formatting instructions
 
 
 Brian
@@ -13,15 +16,12 @@ Pete
 
 Unclaimed
 -write help and formatting instructions
--display help and formatting instructions
 -recipe selection system
 -pdf compiler
 -recipe formatter
 -recipe write
 -table of contents builder
--manual recipe add (gui input)
 -manual recipe add (model)
--manual recipe modify (gui input)
 -manual recipe modify (model)
 
 Finished
