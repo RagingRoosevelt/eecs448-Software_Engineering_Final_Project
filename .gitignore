@@ -9,3 +9,4 @@ parse.py
 *.log
 *.out
 *.synctex.gz
+*.toc
