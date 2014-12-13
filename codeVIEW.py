@@ -1,14 +1,14 @@
 #!/usr/bin/python
 # Tkinter documentation:
 # http://www.tutorialspoint.com/python/python_gui_programming.htm
+# http://effbot.org/tkinterbook/
 
 class GUI:
     def __init__(self):
-        #from Tkinter import *
-        #import tkMessageBox
-        import tkinter as TK # v3.0 and above
+        #import Tkinter # no underscore, uppercase 'T' for versions prior to V3.0
+        #import tkinter # no underscore, lowercase 't' for V3.0 and later
+        import tkinter as TK
         from tkinter import N, S, E, W, END
-        #import Tkinter as TK # v2.9 and below
         
 #        self.window_height = 500
 #        self.window_width = 500
@@ -22,8 +22,6 @@ class GUI:
         # Tk buttons frame (left hand side)
         buttonsFrame = TK.Frame(self.root)
         buttonsFrame.grid(row=0, column=0, sticky=N+S+E+W)
-        #buttonsFrame.grid(row=4, column=0, columnspan=1)
-        #buttonsFrame.pack()
         
         # Tk buttons:
         self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=self.actionLoad)
@@ -31,15 +29,18 @@ class GUI:
         self.buttonModify = TK.Button(buttonsFrame, text="Modify Recipe", command=self.actionModify)
         self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=self.actionRemove)
         self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=self.actionQuit)
+        # have to assign the layout via grid later because .grid doesn't return a type which messes up stuff like .insert()
         self.buttonLoad.grid(row=0, column=0, sticky=N+S+E+W)
         self.buttonAdd.grid(row=1, column=0, sticky=N+S+E+W)
         self.buttonModify.grid(row=2, column=0, sticky=N+S+E+W)
         self.buttonRemove.grid(row=3, column=0, sticky=N+S+E+W)
         self.buttonQuit.grid(row=4, column=0, sticky=N+S+E+W)
         
-        # Tk recipe list
+        # Tk recipe listbox (b/c of TK.EXTENDED, it supports selection of any combination of entries)
         self.recipeList = TK.Listbox(self.root, selectmode=TK.EXTENDED)
+        # have to assign the layout via grid later because .grid doesn't return a type which messes up stuff like .insert()
         self.recipeList.grid(row=0, column=2, sticky=N+S+E+W, rowspan=10, columnspan=10)
+        # populate listbox
         for option in range(0,5):
             self.recipeList.insert(END, "option " + str(option))
         
