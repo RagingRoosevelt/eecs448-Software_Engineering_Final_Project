@@ -1,19 +1,21 @@
-<recipe name="test recipe">
-    <servings>5</servings>
-    <baketime>
-        <time>4</time>
-        <unit>hours</unit>
-    </baketime>
-    <baketemp>
-        <temp>350</temp>
-        <unit>F</unit>
-    </baketemp>
-    <ingredients>
-        <ingredient name="pepper" quanitity="4" unit="cups"/>
-        <ingredient name="salt" quanitity="3" unit="tsp"/>
-    </ingredients> 
-    <procedure>
-        This will show up as several paragraphs.  Everything here should be accepted.  Each paragraph will be separated by a new line and a tab.
-	    Such as the separation between these two paragraphs.  The newline should be preserved.
-    </procedure>
-</recipe>
+<?xml version="1.0"?>
+<data>
+	<recipe name="test recipe">
+	    <servings>5</servings>
+	    <baketime>
+	        <time>4</time>
+	        <unit>hours</unit>
+	    </baketime>
+	    <baketemp>
+	        <temp>350</temp>
+	        <unit>F</unit>
+	    </baketemp>
+	    <ingredients>
+	        <ingredient name="pepper" quantity="4" unit="cups"/>
+	        <ingredient name="salt" quantity="3" unit="tsp"/>
+	    </ingredients> 
+	    <procedure>
+This will show up as several paragraphs. I'm not sure how to handle formatting (indention, new lines, etc.). Hopefully that won't be too difficult to integrate. It looks like I need a way to ignore the newline and tab characters...
+    	</procedure>
+	</recipe>
+</data>
