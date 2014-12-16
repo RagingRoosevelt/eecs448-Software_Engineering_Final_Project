@@ -4,20 +4,46 @@
 # http://effbot.org/tkinterbook/
 
 
-try:
+try: # python v2.X
     print("trying to load Tkinter")
     import Tkinter as TK
-    from Tkinter import N, S, E, W, END
-except ImportError:
+    from Tkinter import N, S, E, W, END	
+    import tkMessageBox as messagebox
+except ImportError: # python v3.X
     print("loading Tkinter failed, trying tkinter instead")
     import tkinter as TK
     from tkinter import N, S, E, W, END, LEFT, RIGHT
+    from tkinter import messagebox
 
+class popupWindow(object):
+    def __init__(self, master, message):
+        top = self.top = TK.Toplevel(master)
+        self.l = TK.Label(top, text=message, anchor=W)
+        self.l.pack()
+        self.e = TK.Entry(top, width=75)
+        self.e.pack()
+        self.b = TK.Button(top, text='Ok', command=self.cleanup)
+        self.b.pack()
+    def cleanup(self):
+        self.value = self.e.get()
+        self.top.destroy()
 
 
 class GUI:
-    #def errorMessage(self, message):
-    #    TK.tkMessageBox.showinfo("Say Hello", "Hello World")
+    def getInfo(self, infoType):
+        if infoType == "URL":
+            message = "Please input the URL."
+        if infoType == "dir":
+            message = "Please input the directory."
+            
+        popup = popupWindow(self.root, message)
+        self.root.wait_window(popup.top)
+        return popup.value
+        
+        
+    def errorMessage(self, message):
+        print(str(message))
+        TK.messagebox.showinfo("Warning", str(message))
 
     def buttonClicked(self, action):
         print("\nA button was pressed:")

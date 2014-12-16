@@ -1,4 +1,5 @@
 from codeVIEW import GUI
+from codeMODEL import Model
 
 # The list of all recipes is stored as
 #   recipesList = [["recipe name", 
@@ -26,6 +27,8 @@ from codeVIEW import GUI
 
 class Controller:
     def __init__(self):
+        self.model = Model()
+    
         self.recipesList=[["cake","..."], ["pie","..."], ["pudding","..."], ["turkey","..."], ["sandwich","..."], ["stew","..."], ["soda","..."], ["chilli","..."], ["salad","..."], ["pizza","..."], ["curry","..."], ["pasta","..."], ["danish","..."]]
         self.recipesList.sort()
 
@@ -49,9 +52,7 @@ class Controller:
             if action=="del":
                 selection = self.gui.getSelectedRecipies()
                 if len(selection)==0:
-                    print("No recipe was selected")
-                    # tell GUI to display corresponding error message
-                    # self.gui.errorMessage("No recipe was selected")
+                    self.gui.errorMessage("No recipe was selected. Please try again.")
                 else:
                     print("The following recipe indices were selected to be removed: " + str(selection))
                     # delete recipes with indices in "selection"
@@ -62,17 +63,17 @@ class Controller:
                     selection = selection[0]
                     print("The following recipe index was selected to be edited: " + str(selection) + "  (" + str(self.recipesList[selection][0]) + ")")
                 elif len(selection)==0:
-                    print("No recipe was selected")
-                    # tell GUI to display corresponding error message
-                    # self.gui.errorMessage("No recipe was selected")
+                    self.gui.errorMessage("No recipe was selected. Please try again.")
                 else:
-                    print("Too many recipes selected")
-                    # tell GUI to display corresponding error message
-                    # self.gui.errorMessage("Too many recipes selected")
+                    self.gui.errorMessage("Too many recipes selected. Please try again.")
                     
             elif action=="add":
                 index = 123123
                 print("New recipe entry created at index: " + str(index))
+                
+                
+            elif action=="load":
+                directory = self.gui.getInfo("dir")
                     
             
             elif action=="quit":
