@@ -1,10 +1,8 @@
 
 #Use test case:
 #http://allrecipes.com/Recipe/Easy-Fruit-Cobbler/
-# to see it kind of work
-#Use:
 #http://allrecipes.com/Recipe/Sugar-Cookie-Icing/
-# to see it not work
+# to see it kind of work
 
 
 #importing regular expression thing
@@ -45,34 +43,39 @@ def findtitle(htmlstr):
     #finding recipe name
     title_m = title_re.search(htmlstr)
     #convoluted string extraction
-    x = title_m.span()[0]
-    y = title_m.span()[1]
-    x = x + len(title_beg_tag)
-    y = y - len(title_end_tag)
+    if title_m:
+        x = title_m.span()[0]
+        y = title_m.span()[1]
+        x = x + len(title_beg_tag)
+        y = y - len(title_end_tag)
+        
+        title_string = ""
     
-    title_string = ""
+        while x < y:
+            title_string += htmlstr[x]
+            x+=1
     
-    while x < y:
-        title_string += htmlstr[x]
-        x+=1
-    
-    return title_string  
-    
+        return title_string  
+    else:
+        print("No title.")
 def getserv(htmlstr):        
     serv_re = re.compile(r'data-originalservings=".*" data')
     
     serv_m = serv_re.search(htmlstr)
     
-    x = serv_m.span()[0]
-    y = serv_m.span()[1]
-    x = x + len(serv_beg_tag)
-    y = y - len(serv_end_tag)
+    if serv_m:
+        x = serv_m.span()[0]
+        y = serv_m.span()[1]
+        x = x + len(serv_beg_tag)
+        y = y - len(serv_end_tag)
     
-    serv_string = ""
-    while x < y:
-        serv_string += htmlstr[x]
-        x+=1
-    return serv_string
+        serv_string = ""
+        while x < y:
+            serv_string += htmlstr[x]
+            x+=1
+        return serv_string
+    else:
+        print("No servings.")
 
 def gettime(htmlstr):
     time_re = re.compile(r'<span id="cookHoursSpan"><em>.*</em>.*</span>')
@@ -81,17 +84,20 @@ def gettime(htmlstr):
     str1 = '<span id="cookHoursSpan"><em>'
     str2 = '</em> hr</span>'
     
-    x = time_m.span()[0]
-    y = time_m.span()[1]
-    x = x + len(str1)
-    y = y - len(str2)
+    if time_m:
+        x = time_m.span()[0]
+        y = time_m.span()[1]
+        x = x + len(str1)
+        y = y - len(str2)
     
-    time_string = ""
+        time_string = ""
     
-    while x < y:
-        time_string += htmlstr[x]
-        x+=1
-    return time_string
+        while x < y:
+            time_string += htmlstr[x]
+            x+=1
+        return time_string
+    else:
+        print("No time.")
 
 def gettimeunit(htmlstr):
     time_re = re.compile(r'<span id="cookHoursSpan"><em>.*</em>.*</span>')
@@ -100,18 +106,21 @@ def gettimeunit(htmlstr):
     str1 = '<span id="cookHoursSpan"><em>1</em> '
     str2 = '</span>'
     
-    x = time_m.span()[0]
-    y = time_m.span()[1]
-    x = x + len(str1)
-    y = y - len(str2)
+    if time_m:
+        x = time_m.span()[0]
+        y = time_m.span()[1]
+        x = x + len(str1)
+        y = y - len(str2)
     
-    timeunit_string = ""
+        timeunit_string = ""
     
-    while x < y:
-        timeunit_string += htmlstr[x]
-        x+=1
+        while x < y:
+            timeunit_string += htmlstr[x]
+            x+=1
         
-    return timeunit_string
+        return timeunit_string
+    else:
+        print("No time unit.")
     
 def getrecipeparts(htmlstr):
     recipe = []
