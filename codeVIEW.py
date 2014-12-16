@@ -3,25 +3,36 @@
 # http://www.tutorialspoint.com/python/python_gui_programming.htm
 # http://effbot.org/tkinterbook/
 
+
+try:
+    print("trying to load Tkinter")
+    import Tkinter as TK
+    from Tkinter import N, S, E, W, END
+except ImportError:
+    print("loading Tkinter failed, trying tkinter instead")
+    import tkinter as TK
+    from tkinter import N, S, E, W, END
+
+
+
 class GUI:
+    #import Tkinter # no underscore, uppercase 'T' for versions prior to V3.0
+    #import tkinter # no underscore, lowercase 't' for V3.0 and later
+    
+    #from tkinter import N, S, E, W, END
+    
+    
     def __init__(self):
-        #import Tkinter # no underscore, uppercase 'T' for versions prior to V3.0
-        #import tkinter # no underscore, lowercase 't' for V3.0 and later
-        import tkinter as TK
-        from tkinter import N, S, E, W, END
+        print("Loading gui")
         
-#        self.window_height = 500
-#        self.window_width = 500
-#        self.button_buffer = 10
-#        self.button_height = 30
-#        self.button_width = 100
-        
+    def main(self):
+        print("main method")
         # Tk root widget: window with titlebar, etc
         self.root = TK.Tk()
         
         # Tk buttons frame (left hand side)
         buttonsFrame = TK.Frame(self.root)
-        buttonsFrame.grid(row=0, column=0, sticky=N+S+E+W)
+        buttonsFrame.grid(row=0, column=0, sticky=TK.N+TK.S+TK.E+TK.W)
         
         # Tk buttons:
         self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=self.actionLoad)
@@ -30,19 +41,19 @@ class GUI:
         self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=self.actionRemove)
         self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=self.actionQuit)
         # have to assign the layout via grid later because .grid doesn't return a type which messes up stuff like .insert()
-        self.buttonLoad.grid(row=0, column=0, sticky=N+S+E+W)
-        self.buttonAdd.grid(row=1, column=0, sticky=N+S+E+W)
-        self.buttonModify.grid(row=2, column=0, sticky=N+S+E+W)
-        self.buttonRemove.grid(row=3, column=0, sticky=N+S+E+W)
-        self.buttonQuit.grid(row=4, column=0, sticky=N+S+E+W)
+        self.buttonLoad.grid(row=0, column=0, sticky=TK.N+TK.S+TK.E+TK.W)
+        self.buttonAdd.grid(row=1, column=0, sticky=TK.N+TK.S+TK.E+TK.W)
+        self.buttonModify.grid(row=2, column=0, sticky=TK.N+TK.S+TK.E+TK.W)
+        self.buttonRemove.grid(row=3, column=0, sticky=TK.N+TK.S+TK.E+TK.W)
+        self.buttonQuit.grid(row=4, column=0, sticky=TK.N+TK.S+TK.E+TK.W)
         
         # Tk recipe listbox (b/c of TK.EXTENDED, it supports selection of any combination of entries)
         self.recipeList = TK.Listbox(self.root, selectmode=TK.EXTENDED)
         # have to assign the layout via grid later because .grid doesn't return a type which messes up stuff like .insert()
-        self.recipeList.grid(row=0, column=2, sticky=N+S+E+W, rowspan=10, columnspan=10)
+        self.recipeList.grid(row=0, column=2, sticky=TK.N+TK.S+TK.E+TK.W, rowspan=10, columnspan=10)
         # populate listbox
         for option in range(0,5):
-            self.recipeList.insert(END, "option " + str(option))
+            self.recipeList.insert(TK.END, "option " + str(option))
         
 
         
@@ -62,4 +73,3 @@ class GUI:
         self.root.destroy()
         
         
-gui = GUI()
