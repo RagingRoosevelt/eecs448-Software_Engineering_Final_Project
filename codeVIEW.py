@@ -16,13 +16,17 @@ except ImportError:
 
 
 class GUI:
+    #def errorMessage(self, message):
+    #    TK.tkMessageBox.showinfo("Say Hello", "Hello World")
+
     def buttonClicked(self, action):
         print("Button Pressed!")
         self.action = action
     
     
-    def setRecipes(self, recipes):
-        for recipe in recipes:
+    def setRecipesList(self, recipesList):
+        self.recipesList = recipesList
+        for recipe in recipesList:
             self.recipeList.insert(TK.END, str(recipe))
             
     def setDisplayRecipe(self,recipe):
@@ -45,7 +49,8 @@ class GUI:
         name = self.recipeName._entry_value.get()
         return name
         
-    #def read
+    def getSelectedRecipies(self):
+        return self.recipeList.curselection()
     
     
     def __init__(self):
@@ -69,7 +74,9 @@ class GUI:
         recipesFrame.grid(row=0, column=1, sticky=N+S+E+W)
         # spacer frame
         spacer = TK.Frame(self.root)
-        spacer.grid(row=0, column=2, columnspan=2, sticky=N+S+E+W)
+        spacer.grid(row=0, column=2, sticky=N+S+E+W)
+        label = TK.Label(spacer, text="     ")
+        label.grid(row=0, column=0, sticky=N+S+E+W)
         # recipe frame
         recipeFrame = TK.Frame(self.root)
         recipeFrame.grid(row=0, column=4, sticky=N+S+E+W)
@@ -81,43 +88,60 @@ class GUI:
         ################
         # MAIN BUTTONS #
         ################
+        # spacer
+        label = TK.Label(buttonsFrame)
+        label.grid(row=0, column=0, sticky=N+S+E+W)
         # Load recipes
         self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=lambda: self.buttonClicked("load"))
-        self.buttonLoad.grid(row=0, column=0, sticky=N+S+E+W)
+        self.buttonLoad.grid(row=1, column=0, sticky=N+S+E+W)
         # Add recipe
         self.buttonAdd = TK.Button(buttonsFrame, text="Add Recipe", command=lambda: self.buttonClicked("add"))
-        self.buttonAdd.grid(row=1, column=0, sticky=N+S+E+W)
+        self.buttonAdd.grid(row=2, column=0, sticky=N+S+E+W)
         # Modify recipe
-        self.buttonModify = TK.Button(buttonsFrame, text="Save Recipe", command=lambda: self.buttonClicked("sav"))
-        self.buttonModify.grid(row=2, column=0, sticky=N+S+E+W)
+        self.buttonModify = TK.Button(buttonsFrame, text="Edit Recipe", command=lambda: self.buttonClicked("mod"))
+        self.buttonModify.grid(row=3, column=0, sticky=N+S+E+W)
         # Remove recipe
         self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("del"))
-        self.buttonRemove.grid(row=3, column=0, sticky=N+S+E+W)
+        self.buttonRemove.grid(row=4, column=0, sticky=N+S+E+W)
         # Quit
         self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=lambda: self.buttonClicked("quit"))
-        self.buttonQuit.grid(row=4, column=0, sticky=N+S+E+W)
+        self.buttonQuit.grid(row=5, column=0, sticky=N+S+E+W)
         
         
         ################
-        # RECIPE FRAME #
+        # RECIPES LIST #
         ################
+        # Scrollbar setup
+        scrollbar = TK.Scrollbar(recipesFrame)
+        scrollbar.grid(row=1, column=11, rowspan=15, sticky=N+S)
         # Recipe List
+        label = TK.Label(recipesFrame, text="Recipes:", anchor=W)
+        label.grid(row=0, column=0,  sticky=N+S+E+W)
         self.recipeList = TK.Listbox(recipesFrame, selectmode=TK.EXTENDED)
-        self.recipeList.grid(row=0, column=0, sticky=N+S+E+W, rowspan=10, columnspan=10)
+        self.recipeList.grid(row=1, column=0, sticky=N+S+E+W, rowspan=15, columnspan=10)
+        # Scrollbar config
+        self.recipeList.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.recipeList.yview)
         
         
         ####################
         # RECIPE DISPLAYER #
         ####################
+        # vertical spacer
+        label = TK.Label(recipeFrame)
+        label.grid(row=0, column=0, sticky=N+S+E+W)
+        # Save Recipe button
+        self.recipeAddIngredient = TK.Button(recipeFrame, text="Save Recipe", command=lambda: self.buttonClicked("savR"))
+        self.recipeAddIngredient.grid(row=1, column=0, sticky=N+S+E+W)
         # Add Ingredient Button
         self.recipeAddIngredient = TK.Button(recipeFrame, text="Add Ingredient", command=lambda: self.buttonClicked("addI"))
-        self.recipeAddIngredient.grid(row=0, column=0, sticky=N+S+E+W)
+        self.recipeAddIngredient.grid(row=3, column=0, sticky=N+S+E+W)
         # Save Ingredient Button
         self.recipeAddIngredient = TK.Button(recipeFrame, text="Save Ingredient", command=lambda: self.buttonClicked("savI"))
-        self.recipeAddIngredient.grid(row=1, column=0, sticky=N+S+E+W)        
+        self.recipeAddIngredient.grid(row=4, column=0, sticky=N+S+E+W)        
         # Remove Ingredient Button
         self.recipeRemoveIngredient = TK.Button(recipeFrame, text="Remove Ingredient", command=lambda: self.buttonClicked("delI"))
-        self.recipeRemoveIngredient.grid(row=2, column=0, sticky=N+S+E+W)
+        self.recipeRemoveIngredient.grid(row=5, column=0, sticky=N+S+E+W)
         
         # Recipe name box
         label = TK.Label(recipeFrame, text="Recipe Name:", anchor=W)
@@ -125,40 +149,51 @@ class GUI:
         self.recipeName = TK.Entry(recipeFrame)
         self.recipeName.insert(0, "test")
         self.recipeName.grid(row=1, column=1, rowspan=1, sticky=N+S+E+W)
+        # Ingredient list scrollbar setup
+        scrollbar = TK.Scrollbar(recipeFrame)
+        scrollbar.grid(row=3, column=2, rowspan=100, sticky=N+S)
         # Ingredient list
         label = TK.Label(recipeFrame, text="Ingredients:", anchor=W)
         label.grid(row=2, column=1, sticky=N+S+E+W)
-        self.ingredients = TK.Listbox(recipeFrame, selectmode=TK.BROWSE)
-        self.ingredients.grid(row=3, column=1, rowspan=100, sticky=N+S+E+W)
+        self.ingredientsList = TK.Listbox(recipeFrame, selectmode=TK.BROWSE)
+        self.ingredientsList.grid(row=3, column=1, rowspan=100, sticky=N+S+E+W)
+        # Ingredient list scrollbar config
+        self.ingredientsList.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.ingredientsList.yview)
+        # Test initial values
+        for i in range(0,100):
+            self.ingredientsList.insert(END,str(i))
                 
         # Ingredient entry:
         label = TK.Label(recipeFrame)
-        label.grid(row=0, column=2, rowspan=3, sticky=N+S+E+W)
-        label = TK.Label(recipeFrame, text="Ingredient:")
-        label.grid(row=3, column=2, sticky=N+S+E+W)
+        label.grid(row=0, column=3, rowspan=3, sticky=N+S+E+W)
+        label = TK.Label(recipeFrame, text="Ingredient:", anchor=W)
+        label.grid(row=3, column=3, sticky=N+S+E+W)
         self.ingredientName = TK.Entry(recipeFrame)
-        self.ingredientName.grid(row=4, column=2, sticky=N+S+E+W)
+        self.ingredientName.grid(row=4, column=3, sticky=N+S+E+W)
         # Ingredient quantity
-        label = TK.Label(recipeFrame, text="Quantity:")
-        label.grid(row=5, column=2, sticky=N+S+E+W)
+        label = TK.Label(recipeFrame, text="Quantity:", anchor=W)
+        label.grid(row=5, column=3, sticky=N+S+E+W)
         self.ingredientQuantity = TK.Entry(recipeFrame)
-        self.ingredientQuantity.grid(row=6, column=2, sticky=N+S+E+W)
+        self.ingredientQuantity.grid(row=6, column=3, sticky=N+S+E+W)
         # Ingredient units
-        label = TK.Label(recipeFrame, text="Unit:")
-        label.grid(row=7, column=2, sticky=N+S+E+W)
+        label = TK.Label(recipeFrame, text="Unit:", anchor=W)
+        label.grid(row=7, column=3, sticky=N+S+E+W)
         self.ingredientUnit = TK.Entry(recipeFrame)
-        self.ingredientUnit.grid(row=8, column=2, sticky=N+S+E+W)
+        self.ingredientUnit.grid(row=8, column=3, sticky=N+S+E+W)
         
         ##################
         # PROCEDURE AREA #
         ##################
+        # Scrollbar setup
         scrollbar = TK.Scrollbar(procedureFrame)
         scrollbar.grid(row=1, column=401, rowspan=301, sticky=N+S)
+        # Procedure
         label = TK.Label(procedureFrame, text="Procedure:", anchor=W)
         label.grid(row=0, column=1, sticky=N+S+E+W)
         self.procedure = TK.Text(procedureFrame, yscrollcommand=scrollbar.set)
         self.procedure.grid(row=1, column=0, columnspan=400, rowspan=300, sticky=N+S+E+W)
-        
+        # Scrollbar config
         self.procedure.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.procedure.yview)
         
