@@ -43,7 +43,7 @@ class Controller:
             
             # print most recent action
             if action!=None:
-                print(str(action) + "\n")
+                print(str(action))
                 
             # decide what to do based on most recent action
             if action=="del":
