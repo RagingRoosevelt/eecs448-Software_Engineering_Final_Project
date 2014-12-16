@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET
 class Model:
 	# Searches directory for .xml recipe files
 	# Returns a list of strings of recipe filenames
-	def scanForRecipes(self, directory = None):
+	def scanForRecipes(self, directory):# = None):
 		
 		recipeList = []
 

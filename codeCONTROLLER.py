@@ -48,7 +48,11 @@ class Controller:
             if action!=None:
                 print(str(action))
                 
+            
             # decide what to do based on most recent action
+            #########################
+            # DELETE RECIPES ACTION #
+            #########################
             if action=="del":
                 selection = self.gui.getSelectedRecipies()
                 if len(selection)==0:
@@ -56,7 +60,11 @@ class Controller:
                 else:
                     print("The following recipe indices were selected to be removed: " + str(selection))
                     # delete recipes with indices in "selection"
-                
+            
+            
+            #######################
+            # EDIT RECIPES ACTION #
+            #######################
             elif action=="mod":
                 selection = self.gui.getSelectedRecipies()
                 if len(selection)==1:
@@ -67,15 +75,36 @@ class Controller:
                 else:
                     self.gui.errorMessage("Too many recipes selected. Please try again.")
                     
+                    
+            #####################
+            # ADD RECIPE ACTION #
+            #####################
             elif action=="add":
                 index = 123123
                 print("New recipe entry created at index: " + str(index))
                 
                 
+            #######################
+            # LOAD RECIPES ACTION #
+            #######################
             elif action=="load":
+                # Ask user for directory
                 directory = self.gui.getInfo("dir")
+                
+                # Scan directory for xml files
+                self.recipesList = self.model.scanForRecipes(directory)
+                
+                # Assemble recipesList fully
+                # self.model.buildRecipesList or whatever
+                
+                # Print results to console
+                print(directory)
+                print(self.recipesList)
                     
-            
+                    
+            ###############
+            # QUIT ACTION #
+            ###############
             elif action=="quit":
                 self.gui.root.destroy()
                 break
