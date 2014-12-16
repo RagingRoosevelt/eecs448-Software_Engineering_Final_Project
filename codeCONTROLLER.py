@@ -26,12 +26,12 @@ from codeVIEW import GUI
 
 class Controller:
     def __init__(self):
-        recipesList=["cake", "pie", "pudding", "turkey", "sandwich", "stew", "soda", "chilli", "salad", "pizza", "curry", "pasta", "danish"]
-        recipesList.sort()
+        self.recipesList=[["cake","..."], ["pie","..."], ["pudding","..."], ["turkey","..."], ["sandwich","..."], ["stew","..."], ["soda","..."], ["chilli","..."], ["salad","..."], ["pizza","..."], ["curry","..."], ["pasta","..."], ["danish","..."]]
+        self.recipesList.sort()
 
         self.gui = GUI()
         self.gui.buildGUI()
-        self.gui.setRecipesList(recipesList)
+        self.gui.setRecipesList(self.recipesList)
 
         
     def main(self):
@@ -43,7 +43,7 @@ class Controller:
             
             # print most recent action
             if action!=None:
-                print(action)
+                print(str(action) + "\n")
                 
             # decide what to do based on most recent action
             if action=="del":
@@ -60,7 +60,7 @@ class Controller:
                 selection = self.gui.getSelectedRecipies()
                 if len(selection)==1:
                     selection = selection[0]
-                    print("The following recipe index was selected to be edited: " + str(selection))
+                    print("The following recipe index was selected to be edited: " + str(selection) + "  (" + str(self.recipesList[selection][0]) + ")")
                 elif len(selection)==0:
                     print("No recipe was selected")
                     # tell GUI to display corresponding error message

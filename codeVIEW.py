@@ -20,14 +20,15 @@ class GUI:
     #    TK.tkMessageBox.showinfo("Say Hello", "Hello World")
 
     def buttonClicked(self, action):
-        print("Button Pressed!")
+        print("\nA button was pressed:")
         self.action = action
     
     
     def setRecipesList(self, recipesList):
         self.recipesList = recipesList
-        for recipe in recipesList:
-            self.recipeList.insert(TK.END, str(recipe))
+        for i in range(0,len(recipesList)):
+            name = str(recipesList[i][0])
+            self.recipeList.insert(TK.END, name)
             
     def setDisplayRecipe(self,recipe):
         # replace with "ingredients = recipe[xxx]"
