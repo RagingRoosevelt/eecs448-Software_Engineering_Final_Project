@@ -87,6 +87,21 @@ class Controller:
                     self.ingredientList = self.model.removeIngredient(self.ingredientList, selection)
                     self.gui.setIngredientList(self.ingredientList)
                     self.gui.root.update()
+                
+            ############################
+            # DELETE INGREDIENT ACTION #
+            ############################
+            elif action=="modI":
+                selection = self.gui.getSelectedIngredient()
+                
+                if len(selection)==0:
+                    self.gui.errorMessage("No ingredient was selected. Please try again.")
+                else:
+                    selection = selection[0]
+                    print("The following ingredient index was selected to be modified: " + str(selection))
+                    
+                    self.gui.setIngredientInfo(self.ingredientList[selection])
+                    self.gui.root.update()
             
             
             #######################
