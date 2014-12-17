@@ -55,11 +55,20 @@ class Controller:
             #########################
             if action=="del":
                 selection = self.gui.getSelectedRecipies()
-                if len(selection)==0:
+                print(selection)
+                recipeSelection = []
+                for item in range(0,len(selection)):
+                    recipeSelection.append(int(selection[item]))
+                if len(recipeSelection)==0:
                     self.gui.errorMessage("No recipe was selected. Please try again.")
                 else:
-                    print("The following recipe indices were selected to be removed: " + str(selection))
-                    # delete recipes with indices in "selection"
+                    print("The following recipe indices were selected to be removed: " + str(recipeSelection))
+                
+                self.model.removeRecipes(self.recipesList, recipeSelection)
+                self.gui.setRecipesList(self.recipesList)
+                self.gui.root.update()
+                
+                print(self.recipesList)
             
             
             #######################
@@ -68,7 +77,7 @@ class Controller:
             elif action=="mod":
                 selection = self.gui.getSelectedRecipies()
                 if len(selection)==1:
-                    selection = selection[0]
+                    selection = int(selection[0])
                     print("The following recipe index was selected to be edited: " + str(selection) + "  (" + str(self.recipesList[selection][0]) + ")")
                 elif len(selection)==0:
                     self.gui.errorMessage("No recipe was selected. Please try again.")
@@ -91,15 +100,16 @@ class Controller:
                 # Ask user for directory
                 directory = self.gui.getInfo("dir")
                 
-                # Scan directory for xml files
-                self.recipesList = self.model.scanForRecipes(directory)
+                # Build recipe index
+                self.recipesList = self.model.loadRecipes(directory)
                 
-                # Assemble recipesList fully
-                # self.model.buildRecipesList or whatever
-                
-                # Print results to console
-                print(directory)
+                # Print result to console
                 print(self.recipesList)
+                print(directory)
+                
+                # Display recipe list
+                self.gui.setRecipesList(self.recipesList)
+                self.gui.root.update()
                     
                     
             ###############

@@ -43,7 +43,10 @@ class GUI:
         
     def errorMessage(self, message):
         print(str(message))
-        TK.messagebox.showinfo("Warning", str(message))
+        try: 
+            TK.messagebox.showinfo("Warning", str(message))
+        except:
+            messagebox.showinfo("Warning", str(message))
 
     def buttonClicked(self, action):
         print("\nA button was pressed:")
@@ -52,9 +55,10 @@ class GUI:
     
     def setRecipesList(self, recipesList):
         self.recipesList = recipesList
+        self.recipeList.delete(0, END)
         for i in range(0,len(recipesList)):
             name = str(recipesList[i][0])
-            self.recipeList.insert(TK.END, name)
+            self.recipeList.insert(END, name)
             
     def setDisplayRecipe(self,recipe):
         # replace with "ingredients = recipe[xxx]"
@@ -119,19 +123,19 @@ class GUI:
         label = TK.Label(buttonsFrame)
         label.grid(row=0, column=0, sticky=N+S+E+W)
         # Load recipes
-        self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=lambda: self.buttonClicked("load"))
+        self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=lambda: self.buttonClicked("load"), anchor=W)
         self.buttonLoad.grid(row=1, column=0, sticky=N+S+E+W)
         # Add recipe
-        self.buttonAdd = TK.Button(buttonsFrame, text="Add Recipe", command=lambda: self.buttonClicked("add"))
+        self.buttonAdd = TK.Button(buttonsFrame, text="Add Recipe", command=lambda: self.buttonClicked("add"), anchor=W)
         self.buttonAdd.grid(row=2, column=0, sticky=N+S+E+W)
         # Modify recipe
-        self.buttonModify = TK.Button(buttonsFrame, text="Edit Recipe", command=lambda: self.buttonClicked("mod"))
+        self.buttonModify = TK.Button(buttonsFrame, text="Edit Recipe", command=lambda: self.buttonClicked("mod"), anchor=W)
         self.buttonModify.grid(row=3, column=0, sticky=N+S+E+W)
         # Remove recipe
-        self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("del"))
+        self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("del"), anchor=W)
         self.buttonRemove.grid(row=4, column=0, sticky=N+S+E+W)
         # Quit
-        self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=lambda: self.buttonClicked("quit"))
+        self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=lambda: self.buttonClicked("quit"), anchor=W)
         self.buttonQuit.grid(row=5, column=0, sticky=N+S+E+W)
         
         
