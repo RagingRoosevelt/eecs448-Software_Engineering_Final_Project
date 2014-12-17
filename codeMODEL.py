@@ -6,27 +6,9 @@
 
 import os, sys
 from xml.etree import ElementTree as ET
+from subprocess import call
 
 class Model:
-    # Removes user-selected ingredient from list
-    # Returns the resulting ingredient list
-    def removeIngredient(self, incredientList, ingredientSelection):
-        print("Removed ingredient #" + str(ingredientSelection) + " (" + incredientList[ingredientSelection][0] + ")")
-        del incredientList[ingredientSelection]
-        return incredientList
-
-    
-    # Removes user-selected recipes from the list
-    # Returns the resulting recipes list
-    def removeRecipes(self, recipesList, recipeSelection):
-        for i in range(0,len(recipeSelection)):
-            # remove from the end to avoid messing up indices
-            j=len(recipeSelection)-i-1
-            print("Removed recipe #" + str(recipeSelection[j]) + " (" + recipesList[recipeSelection[j]][0] + ")")
-            del recipesList[recipeSelection[j]]
-        return recipesList
-        
-        
     # Searches directory for .xml recipe files
     # Returns a list of strings of recipe filenames
     def loadRecipes(self, directory):
@@ -105,35 +87,82 @@ class Model:
     
     # Converts list of lists to string and writes to file
     # Returns nothing
-    def writeRecipe(self, filename, recipe):    
+    def writeRecipe(self, directory, filename, recipe):    
         
-        file = open(filename, 'w')
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+        
+        file = open(directory + filename, 'w')
 
-        file.write('<?xml version ="1.0"?>')
+        file.write('<?xml version ="1.0"?>\n')
 
-        recipeString1 = '<data><recipe name="' + recipe[0] + '">'\
-                        '<servings>' + recipe[1] + '</servings>'\
-                        '<baketime><time>' + recipe[2][0] + '</time>'\
-                        '<unit>' + recipe[2][1] + '</unit></baketime>'\
-                        '<baketemp><temp>' + recipe [3][0] + '</temp>'\
-                        '<unit>' + recipe[3][1] + '</unit></baketemp>'
+        recipeString1 = '<data>\n\t<recipe name="' + str(recipe[0]) + '">'\
+                        '\n\t\t<servings>' + str(recipe[4]) + '</servings>'\
+                        '\n\t\t<baketime>\n\t\t\t<time>' + str(recipe[2][0]) + '</time>'\
+                        '\n\t\t\t<unit>' + str(recipe[2][1]) + '</unit>\n\t\t</baketime>'\
+                        '\n\t\t<baketemp>\n\t\t\t<temp>' + str(recipe [3][0]) + '</temp>'\
+                        '\n\t\t\t<unit>' + str(recipe[3][1]) + '</unit>\n\t\t</baketemp>'
 
-        recipeString2 = '<ingredients>'
+        recipeString2 = '\n\t\t<ingredients>'
 
         i = 0
         
-        for ingred in recipe[4]:
-            recipeString2 += '<ingredient name="' + recipe[4][i][0] + \
-            '" quantity="' + recipe[4][i][1] + '" unit="' + recipe[4][i][2] + \
+        for ingred in recipe[5]:
+            recipeString2 += '\n\t\t\t<ingredient name="' + str(recipe[5][i][0]) + \
+            '" quantity="' + str(recipe[5][i][1]) + '" unit="' + str(recipe[5][i][2]) + \
             '"/>'
             i += 1
 
-        recipeString2 += '</ingredients>'
+        recipeString2 += '\n\t\t</ingredients>'
 
-        recipeString3 = '<procedure>' + recipe[5] + '</procedure></recipe></data>'
+        recipeString3 = '\n\t\t<procedure>\n\t\t\t' + str(recipe[6]) + '\n\t\t</procedure>\n\t</recipe>\n</data>'
 
         recipeString = recipeString1 + recipeString2 + recipeString3
         
         file.write(recipeString)
         
         file.close()
+        
+    def writeLaTeX(self, directory, filename, recipeList):
+        print(directory)
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+        
+        file = open(directory + filename + ".tex", 'w')
+        
+        file.write("\\documentclass{article}\n"+\
+            "\\usepackage{makeidx}\n"+\
+            "\\usepackage[nonumber,index]{cuisine}\n"+\
+            "\\RecipeWidths{\\textwidth}{3cm}{0cm}{6cm}{.75cm}{2cm}\n"+\
+            "\n\\usepackage{xcolor}\n"+\
+            "\\renewcommand*{\\recipestepnumberfont}{\\color[HTML]{FFFFFF}}\n\n"+\
+            "\\begin{document}\n\n")
+        
+        for recipe in recipeList:
+            file.write("\n\\begin{recipe}{" + recipe[0] + "}{" + str(recipe[4]) + " servings}{")
+
+            if (recipe[2][0]!=0) and (recipe[3][0]!=0):
+                file.write(str(recipe[2][0]) + " " + str(recipe[2][1]) + " at " + str(recipe[3][0]) + "$^{\circ}$" + str(recipe[3][1]) )
+            
+            file.write("}")
+            for ingredient in recipe[5]:
+                file.write("\n\t\\ingredient[" + str(ingredient[1]) + "]{" + ingredient[2] + "}{" + ingredient[0] + "}")
+            file.write("\n\t\\freeform " + recipe[6])
+            file.write("\n\\end{recipe}\n\pagebreak\n")
+        
+        
+        
+        
+        file.write("\n\\printindex\n\\end{document}")
+        print("Wrote to " + directory + filename + ".tex")
+        file.close()
+        
+        call(['pdflatex', "-output-directory="+directory , directory + filename + ".tex"], shell=False)
+        #os.remove(directory+filename+".aux")
+        #os.remove(directory+filename+".log")
+        
+        
+        
+        
+        
+        

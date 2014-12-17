@@ -200,21 +200,27 @@ class GUI:
         # spacer
         label = TK.Label(buttonsFrame)
         label.grid(row=0, column=0, sticky=N+S+E+W)
-        # Load recipes
-        self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=lambda: self.buttonClicked("load"), anchor=W)
+        # Load recipes from disk
+        self.buttonLoad = TK.Button(buttonsFrame, text="Load from disk", command=lambda: self.buttonClicked("load"), anchor=W)
         self.buttonLoad.grid(row=1, column=0, sticky=N+S+E+W)
+        # Save recipes to disk
+        self.buttonSave = TK.Button(buttonsFrame, text="Save to disk", command=lambda: self.buttonClicked("save"), anchor=W)
+        self.buttonSave.grid(row=2, column=0, sticky=N+S+E+W)
         # Add recipe
         self.buttonAdd = TK.Button(buttonsFrame, text="Add Recipe", command=lambda: self.buttonClicked("addR"), anchor=W)
-        self.buttonAdd.grid(row=2, column=0, sticky=N+S+E+W)
+        self.buttonAdd.grid(row=3, column=0, sticky=N+S+E+W)
         # Modify recipe
         self.buttonModify = TK.Button(buttonsFrame, text="Edit Recipe", command=lambda: self.buttonClicked("modR"), anchor=W)
-        self.buttonModify.grid(row=3, column=0, sticky=N+S+E+W)
+        self.buttonModify.grid(row=4, column=0, sticky=N+S+E+W)
         # Remove recipe
         self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("delR"), anchor=W)
-        self.buttonRemove.grid(row=4, column=0, sticky=N+S+E+W)
+        self.buttonRemove.grid(row=5, column=0, sticky=N+S+E+W)
+        # Compile PDF
+        self.buttonRemove = TK.Button(buttonsFrame, text="Compile PDF", command=lambda: self.buttonClicked("PDF"), anchor=W)
+        self.buttonRemove.grid(row=6, column=0, sticky=N+S+E+W)
         # Quit
         self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=lambda: self.buttonClicked("quit"), anchor=W)
-        self.buttonQuit.grid(row=5, column=0, sticky=N+S+E+W)
+        self.buttonQuit.grid(row=7, column=0, sticky=N+S+E+W)
         
         
         ################

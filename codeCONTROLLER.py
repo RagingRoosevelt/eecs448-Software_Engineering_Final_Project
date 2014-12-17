@@ -17,10 +17,11 @@ from codeMODEL import Model
 # By index, we have
 #   recipesList[i][0] = "recipe name"
 #   recipesList[i][1] = "filepath"
-#   recipesList[i][2] = [bake temp, "units"]
-#   recipesList[i][3] = servings
-#   recipesList[i][4] = [["ingredient name", quantity, "units"],  [...],  ...,  [...]]
-#   recipesList[i][5] = "procedure"
+#   recipesList[i][2] = [bake time, "units"]
+#   recipesList[i][3] = [bake temp, "units"]
+#   recipesList[i][4] = servings
+#   recipesList[i][5] = [["ingredient name", quantity, "units"],  [...],  ...,  [...]]
+#   recipesList[i][6] = "procedure"
 #
 # recipesList.sort() will sort the recipes by name and should be performed whenever a recipe is added
 
@@ -252,6 +253,29 @@ class Controller:
                 # Display recipe list
                 self.gui.setRecipesList(self.recipesList)
                 self.gui.root.update()
+                
+                
+            #######################
+            # SAVE RECIPES ACTION #
+            #######################
+            elif action=="save":
+                # Ask user for directory
+                directory = self.gui.getInfo("dir")
+                if directory == "":
+                    self.gui.errorMessage("Using current working directory for source directory")
+                
+                for recipe in self.recipesList:
+                    directory = str(directory) + "/"
+                    filename = recipe[0] + ".xml"
+                    print("Writing to " + filename)
+                    self.model.writeRecipe(directory, filename, recipe)
+                    
+                    
+            ######################
+            # COMPILE PDF ACTION #
+            ######################
+            elif action=="PDF":
+                self.model.writeLaTeX("E:\\Dropbox\\Documents (current)\\eecs 448 (F'14)\\eecs448fp\\test\\", "test", self.recipesList)
                     
                     
             ###############
