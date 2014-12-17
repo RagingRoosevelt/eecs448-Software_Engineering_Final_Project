@@ -228,12 +228,15 @@ class GUI:
         # Remove recipe
         self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("delR"), anchor=W)
         self.buttonRemove.grid(row=5, column=0, sticky=N+S+E+W)
+        # Fetch from URL
+        self.buttonURL = TK.Button(buttonsFrame, text="Fetch from URL", command=lambda: self.buttonClicked("URL"), anchor=W)
+        self.buttonURL.grid(row=6, column=0, sticky=N+S+E+W)
         # Compile PDF
-        self.buttonRemove = TK.Button(buttonsFrame, text="Compile PDF", command=lambda: self.buttonClicked("PDF"), anchor=W)
-        self.buttonRemove.grid(row=6, column=0, sticky=N+S+E+W)
+        self.buttonPDF = TK.Button(buttonsFrame, text="Compile PDF", command=lambda: self.buttonClicked("PDF"), anchor=W)
+        self.buttonPDF.grid(row=7, column=0, sticky=N+S+E+W)
         # Quit
         self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=lambda: self.buttonClicked("quit"), anchor=W)
-        self.buttonQuit.grid(row=7, column=0, sticky=N+S+E+W)
+        self.buttonQuit.grid(row=8, column=0, sticky=N+S+E+W)
         
         
         ################

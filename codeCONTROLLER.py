@@ -235,6 +235,22 @@ class Controller:
                 self.gui.root.update()
                 
                 print("New recipe entry created at index: " + str(self.currentRecipeIndex[0]))
+            
+            
+            ##################
+            # FETCH FROM URL #
+            ##################
+            elif action=="URL":
+                URL = self.gui.getInfo("URL")
+                self.currentRecipeIndex = [len(self.recipesList)]
+                
+                recipe = self.model.urlLoad(URL)
+                
+                self.recipesList.append(recipe)
+                self.gui.setRecipesList(self.recipesList)
+                self.gui.root.update()
+                
+                print("New recipe added at index: " + str(self.currentRecipeIndex[0]))
                 
                 
             #######################
@@ -250,8 +266,8 @@ class Controller:
                 self.recipesList = self.model.loadRecipes(directory)
                 
                 # Print result to console
-                print(self.recipesList)
-                print(directory)
+                #print(self.recipesList)
+                #print(directory)
                 
                 # Display recipe list
                 self.gui.setRecipesList(self.recipesList)
