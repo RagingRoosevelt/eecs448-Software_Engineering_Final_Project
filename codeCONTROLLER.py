@@ -88,9 +88,9 @@ class Controller:
                     self.gui.setIngredientList(self.ingredientList)
                     self.gui.root.update()
                 
-            ############################
-            # DELETE INGREDIENT ACTION #
-            ############################
+            ##########################
+            # EDIT INGREDIENT ACTION #
+            ##########################
             elif action=="modI":
                 selection = self.gui.getSelectedIngredient()
                 
