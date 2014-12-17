@@ -9,11 +9,10 @@ from xml.etree import ElementTree as ET
 
 class Model:
     def removeRecipes(self, recipesList, recipeSelection):
-        for item in recipeSelection:
-############# BUGGY ##############
-            print(item)
-            print("Removed recipe #" + str(recipeSelection[item]) + " (" + recipesList[item][0] + ")")
-            del recipesList[item]
+        for i in range(0,len(recipeSelection)):
+            print(recipeSelection[i])
+            print("Removed recipe #" + str(recipeSelection[i]) + " (" + recipesList[recipeSelection[i]][0] + ")")
+            del recipesList[recipeSelection[i]]
         return recipesList
     
     
