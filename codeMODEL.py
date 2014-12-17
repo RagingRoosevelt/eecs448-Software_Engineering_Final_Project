@@ -11,7 +11,10 @@ from subprocess import call
 
 # for URL fetch
 import re
-import urllib.request
+try:
+    from urllib.request import urlopen
+except:
+    from urllib2 import urlopen
 
 class Model:
     def __init__(self):
@@ -54,7 +57,7 @@ class Model:
 
         recipesList = []
         for file in self.fileList:
-            file = self.directory + "\\" + file
+            file = self.directory + "/" + file
             tree = self.getXML(file)
             recipe = self.readRecipe(tree, file)
             recipesList.append(recipe)
@@ -129,6 +132,10 @@ class Model:
         file = open(directory + filename, 'w')
 
         file.write('<?xml version ="1.0"?>\n')
+        
+        recipe[0] = recipe[0].replace("&","and")
+        recipe[0] = recipe[0].replace(">","")
+        recipe[0] = recipe[0].replace("<","")
 
         recipeString1 = '<data>\n\t<recipe name="' + str(recipe[0]) + '">'\
                         '\n\t\t<servings>' + str(recipe[4]) + '</servings>'\
@@ -142,6 +149,10 @@ class Model:
         i = 0
         
         for ingred in recipe[5]:
+            recipe[5][i][0]=recipe[5][i][0].replace("&","and")
+            recipe[5][i][0]=recipe[5][i][0].replace(">","")
+            recipe[5][i][0]=recipe[5][i][0].replace("<","")
+            
             recipeString2 += '\n\t\t\t<ingredient name="' + str(recipe[5][i][0]) + \
             '" quantity="' + str(recipe[5][i][1]) + '" unit="' + str(recipe[5][i][2]) + \
             '"/>'
@@ -149,7 +160,7 @@ class Model:
 
         recipeString2 += '\n\t\t</ingredients>'
 
-        recipeString3 = '\n\t\t<procedure>\n\t\t\t' + str(recipe[6]) + '\n\t\t</procedure>\n\t</recipe>\n</data>'
+        recipeString3 = '\n\t\t<procedure>' + str(recipe[6]) + '\n\t\t</procedure>\n\t</recipe>\n</data>'
 
         recipeString = recipeString1 + recipeString2 + recipeString3
         
@@ -160,7 +171,10 @@ class Model:
     def writeLaTeX(self, directory, filename, recipeList):
         
         if directory == "":
-            directory = os.getcwd() + "\\"
+            directory = os.getcwd() + "/"
+        elif (directory[-1] != "/") or (directory[-1] != "\\"):
+            directory = directory[:-1] + "/"
+            
         if filename == "":
             filename = "output"
             
@@ -239,7 +253,7 @@ class urlFetch:
         
     def gethtml(self, page_to_get):
         #getting the html (in byte form)
-        response = urllib.request.urlopen(page_to_get)
+        response = urlopen(page_to_get)
         htmlinbytes = response.read()
         response.close()
         #converting html to string
@@ -291,8 +305,9 @@ class urlFetch:
         time_re = re.compile(r'<span id="cookHoursSpan"><em>.*</em>.*</span>')
         time_m = time_re.search(htmlstr)
         
+        
         str1 = '<span id="cookHoursSpan"><em>'
-        str2 = '</em> hr</span>'
+        str2 = '</em> hrs</span>'
         
         if time_m:
             x = time_m.span()[0]

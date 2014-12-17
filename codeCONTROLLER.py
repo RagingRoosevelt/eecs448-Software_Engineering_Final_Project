@@ -273,6 +273,10 @@ class Controller:
                     self.gui.errorMessage("No directory provided.  Using current working directory for source directory")
                 
                 for recipe in self.recipesList:
+                    recipe[0] = recipe[0].replace(">","")
+                    recipe[0] = recipe[0].replace("<","")
+                    recipe[0] = recipe[0].replace("&","and")
+                
                     directory = str(directory) + "/"
                     filename = recipe[0] + ".xml"
                     print("Writing to " + filename)

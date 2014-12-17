@@ -8,7 +8,7 @@
 		</baketime>
 		<baketemp>
 			<temp>0</temp>
-			<unit></unit>
+			<unit>None</unit>
 		</baketemp>
 		<ingredients>
 			<ingredient name="all-purpose flour" quantity="1/2" unit="cups"/>
@@ -22,12 +22,13 @@
 			<ingredient name="molasses" quantity="1/4" unit="cup"/>
 			<ingredient name="water" quantity="1/2" unit="cups"/>
 		</ingredients>
-		<procedure>
-			 Whisk the flour, baking powder, baking soda, salt, ginger, and cinnamon in a bowl; set aside. Beat the egg in a separate mixing bowl with the vanilla and molasses until smooth. Whisk in the water until completely incorporated. Stir the flour mixture into the molasses mixture until just combined -- a few lumps are okay.
+		<procedure>Whisk the flour, baking powder, baking soda, salt, ginger, and cinnamon in a bowl; set aside. Beat the egg in a separate mixing bowl with the vanilla and molasses until smooth. Whisk in the water until completely incorporated. Stir the flour mixture into the molasses mixture until just combined -- a few lumps are okay.
 
- Heat a lightly oiled griddle over medium-high heat. Drop batter by large spoonfuls onto the griddle, and cook until bubbles form and the edges are dry. Flip, and cook until browned on the other side. Repeat with remaining batter.
+Heat a lightly oiled griddle over medium-high heat. Drop batter by large spoonfuls onto the griddle, and cook until bubbles form and the edges are dry. Flip, and cook until browned on the other side. Repeat with remaining batter.
 
 
+
+		
 
 		</procedure>
 	</recipe>

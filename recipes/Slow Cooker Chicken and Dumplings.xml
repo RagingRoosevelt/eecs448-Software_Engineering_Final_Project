@@ -8,7 +8,7 @@
 		</baketime>
 		<baketemp>
 			<temp>0</temp>
-			<unit></unit>
+			<unit>None</unit>
 		</baketemp>
 		<ingredients>
 			<ingredient name="skinless, boneless chicken breast halves" quantity="4" unit=" "/>
@@ -17,11 +17,12 @@
 			<ingredient name="onion, finely diced" quantity="1" unit=" "/>
 			<ingredient name="refrigerated biscuit dough, torn into pieces" quantity="2" unit="ounce"/>
 		</ingredients>
-		<procedure>
-			 Place the chicken, butter, soup, and onion in a slow cooker, and fill with enough water to cover.
+		<procedure>Place the chicken, butter, soup, and onion in a slow cooker, and fill with enough water to cover.
 
- Cover, and cook for 5 to 6 hours on High. About 30 minutes before serving, place the torn biscuit dough in the slow cooker. Cook until the dough is no longer raw in the center.
+Cover, and cook for 5 to 6 hours on High. About 30 minutes before serving, place the torn biscuit dough in the slow cooker. Cook until the dough is no longer raw in the center.
 
+
+		
 
 		</procedure>
 	</recipe>
