@@ -30,6 +30,7 @@ class popupWindow(object):
 
 
 class GUI:
+    # Get single string of user input via popup
     def getInfo(self, infoType):
         if infoType == "URL":
             message = "Please input the URL."
@@ -39,27 +40,41 @@ class GUI:
         popup = popupWindow(self.root, message)
         self.root.wait_window(popup.top)
         return popup.value
-        
-        
+    
+    
+    # Display provided error message to user, print error message to console
     def errorMessage(self, message):
         print(str(message))
         try: 
             TK.messagebox.showinfo("Warning", str(message))
         except:
             messagebox.showinfo("Warning", str(message))
-
+    
+    
+    # Set most-recent action, announce button press to console
     def buttonClicked(self, action):
         print("\nA button was pressed:")
         self.action = action
     
     
+    # Set the displayed list of recipes
     def setRecipesList(self, recipesList):
         self.recipesList = recipesList
         self.recipeList.delete(0, END)
         for i in range(0,len(recipesList)):
             name = str(recipesList[i][0])
             self.recipeList.insert(END, name)
-            
+    
+    
+    # Set the displayed list of ingredients
+    def setIngredientList(self, ingredientList):
+        self.ingredientsList.delete(0, END)
+        for ingredient in range(0,len(ingredientList)):
+            self.ingredientsList.insert(END,str(ingredientList[ingredient][0]))
+        
+    
+    
+    # Set the displayed individual recipe
     def setDisplayRecipe(self,recipe):
         # replace with "ingredients = recipe[xxx]"
         ingredients = ["ing 1", "ing 2", "ing 3"]
@@ -70,27 +85,53 @@ class GUI:
         self.recipeName.set(str(name))
         for ingredient in ingredients:
             self.ingredients.insert(TK.END, str(ingredient))
-        
+    
+    
+    # Retrieve the most-recent action, reset most-recent action tracking
     def getRecentAction(self):
         temp = self.action
         self.action = None
         return temp
-        
-    def readRecipeName(self):
+    
+    
+    # Read and return recipe name from input box
+    def getRecipeName(self):
         name = self.recipeName._entry_value.get()
         return name
-        
+    
+    
+    # Read currently selected recipes and return as tupple
     def getSelectedRecipies(self):
-        return self.recipeList.curselection()
+        selection = self.recipeList.curselection()
+        
+        recipeSelection = []
+        
+        for item in range(0,len(selection)):
+            recipeSelection.append(int(selection[item]))
+            
+        return recipeSelection
+        
+    
+    # Read currently selected ingredient and return as 
+    def getSelectedIngredient(self):
+        selection = self.ingredientsList.curselection()
+        if len(selection)==1:
+            selection = [int(self.ingredientsList.curselection()[0])]
+            print("Currently selected is ingredient #" + str(selection))
+        else:
+            selection=[]
+        return selection
     
     
+    # Initialize the GUI
     def __init__(self):
         self.action=None
         
         # Tk root widget: window with titlebar, etc
         self.root = TK.Tk()
-        
     
+    
+    # Place GUI items
     def buildGUI(self):
         print("main method")
         
@@ -191,9 +232,6 @@ class GUI:
         # Ingredient list scrollbar config
         self.ingredientsList.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.ingredientsList.yview)
-        # Test initial values
-        for i in range(0,100):
-            self.ingredientsList.insert(END,str(i))
                 
         # Ingredient entry:
         label = TK.Label(recipeFrame)

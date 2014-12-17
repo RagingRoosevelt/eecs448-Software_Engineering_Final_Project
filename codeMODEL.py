@@ -8,15 +8,25 @@ import os, sys
 from xml.etree import ElementTree as ET
 
 class Model:
+    # Removes user-selected ingredient from list
+    # Returns the resulting ingredient list
+    def removeIngredient(self, incredientList, ingredientSelection):
+        print("Removed ingredient #" + str(ingredientSelection) + " (" + incredientList[ingredientSelection][0] + ")")
+        del incredientList[ingredientSelection]
+        return incredientList
+
+    
+    # Removes user-selected recipes from the list
+    # Returns the resulting recipes list
     def removeRecipes(self, recipesList, recipeSelection):
         for i in range(0,len(recipeSelection)):
-            print(recipeSelection[i])
-            print("Removed recipe #" + str(recipeSelection[i]) + " (" + recipesList[recipeSelection[i]][0] + ")")
-            del recipesList[recipeSelection[i]]
+            # remove from the end to avoid messing up indices
+            j=len(recipeSelection)-i-1
+            print("Removed recipe #" + str(recipeSelection[j]) + " (" + recipesList[recipeSelection[j]][0] + ")")
+            del recipesList[recipeSelection[j]]
         return recipesList
-    
-    
-    
+        
+        
     # Searches directory for .xml recipe files
     # Returns a list of strings of recipe filenames
     def loadRecipes(self, directory):
@@ -36,7 +46,8 @@ class Model:
             recipe = self.readRecipe(tree, file)
             recipesList.append(recipe)
         return recipesList
-
+    
+    
     # Converts given .xml file into tree structure
     # Returns tree
     def getXML(self, string):
@@ -45,7 +56,8 @@ class Model:
         tree = ET.parse(string)
 
         return tree
-
+    
+    
     # Converts tree structure into list of lists
     # Returns list of lists that represents the recipe
     def readRecipe(self, tree, file):
@@ -89,7 +101,8 @@ class Model:
         recipe.append(root[0][4].text)
 
         return recipe
-
+    
+    
     # Converts list of lists to string and writes to file
     # Returns nothing
     def writeRecipe(self, filename, recipe):    
