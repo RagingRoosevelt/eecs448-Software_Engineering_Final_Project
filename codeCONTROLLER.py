@@ -184,6 +184,7 @@ class Controller:
                     self.currentIngredientList = self.currentRecipe[5]
                     
                     self.gui.setDisplayRecipe(self.currentRecipe)
+                    self.gui.setProcedure(self.currentRecipe[6])
                     
                 elif len(self.currentRecipeIndex)==0:
                     self.gui.errorMessage("No recipe was selected. Please try again.")
@@ -203,12 +204,14 @@ class Controller:
                     print("Saving recipe")
                     
                     self.currentRecipe[0] = self.gui.getRecipeName()
+                    self.currentRecipe[6] = self.gui.getProcedure()
                     
                     self.recipesList[self.currentRecipeIndex[0]] = self.currentRecipe
                     self.gui.setRecipesList(self.recipesList)
                     self.gui.setIngredientInfo([])
                     self.gui.setIngredientList([])
                     self.gui.setRecipeName("")
+                    self.gui.setProcedure("")
                     self.gui.root.update()
                     
                     print(self.recipesList[self.currentRecipeIndex[0]])
@@ -239,7 +242,7 @@ class Controller:
             #######################
             elif action=="load":
                 # Ask user for directory
-                directory = self.gui.getInfo("dir")
+                directory = self.gui.getInfo("source")
                 if directory == "":
                     self.gui.errorMessage("Using current working directory for source directory")
                 
@@ -260,7 +263,7 @@ class Controller:
             #######################
             elif action=="save":
                 # Ask user for directory
-                directory = self.gui.getInfo("dir")
+                directory = self.gui.getInfo("desDir")
                 if directory == "":
                     self.gui.errorMessage("Using current working directory for source directory")
                 
@@ -275,6 +278,9 @@ class Controller:
             # COMPILE PDF ACTION #
             ######################
             elif action=="PDF":
+                directory = self.gui.getInfo("desDir")
+                filename = self.gui.getInfo("desFile")
+                
                 self.model.writeLaTeX("E:\\Dropbox\\Documents (current)\\eecs 448 (F'14)\\eecs448fp\\test\\", "test", self.recipesList)
                     
                     

@@ -32,12 +32,26 @@ class popupWindow(object):
 
 
 class GUI:
+    # Get procedure
+    def getProcedure(self):
+        return self.procedure.get("0.0",END)
+        
+    # Set procedure
+    def setProcedure(self, procedureText):
+        self.procedure.delete("0.0",END)
+        self.procedure.insert(END, procedureText)
+
+
     # Get single string of user input via popup
     def getInfo(self, infoType):
         if infoType == "URL":
             message = "Please input the URL."
-        if infoType == "dir":
+        if infoType == "source":
             message = "Please input the directory to load recipes from."
+        if infoType == "desDir":
+            message = "What directory would you like to save the output files to?"
+        if infoType == "desFile":
+            message = "What would you like to name the compiled PDF?"
             
         popup = popupWindow(self.root, message)
         self.root.wait_window(popup.top)
@@ -53,8 +67,7 @@ class GUI:
     
     # Read and return recipe name from input box
     def getRecipeName(self):
-        name = self.recipeName.get()
-        return name
+        return self.recipeName.get()
     
     
     # Read ingredient name, quantity, unit, currently selected ingredient
