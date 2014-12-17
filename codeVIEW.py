@@ -42,51 +42,6 @@ class GUI:
         return popup.value
     
     
-    # Display provided error message to user, print error message to console
-    def errorMessage(self, message):
-        print(str(message))
-        try: 
-            TK.messagebox.showinfo("Warning", str(message))
-        except:
-            messagebox.showinfo("Warning", str(message))
-    
-    
-    # Set most-recent action, announce button press to console
-    def buttonClicked(self, action):
-        print("\nA button was pressed:")
-        self.action = action
-    
-    
-    # Set the displayed list of recipes
-    def setRecipesList(self, recipesList):
-        self.recipesList = recipesList
-        self.recipeList.delete(0, END)
-        for i in range(0,len(recipesList)):
-            name = str(recipesList[i][0])
-            self.recipeList.insert(END, name)
-    
-    
-    # Set the displayed list of ingredients
-    def setIngredientList(self, ingredientList):
-        self.ingredientsList.delete(0, END)
-        for ingredient in range(0,len(ingredientList)):
-            self.ingredientsList.insert(END,str(ingredientList[ingredient][0]))
-        
-    
-    
-    # Set the displayed individual recipe
-    def setDisplayRecipe(self,recipe):
-        # replace with "ingredients = recipe[xxx]"
-        ingredients = ["ing 1", "ing 2", "ing 3"]
-        
-        # replace with "name = recipe[yyy]"
-        name = "recipe name"
-        
-        self.recipeName.set(str(name))
-        for ingredient in ingredients:
-            self.ingredients.insert(TK.END, str(ingredient))
-    
-    
     # Retrieve the most-recent action, reset most-recent action tracking
     def getRecentAction(self):
         temp = self.action
@@ -99,6 +54,15 @@ class GUI:
         name = self.recipeName._entry_value.get()
         return name
     
+    
+    # Read ingredient name, quantity, unit, currently selected ingredient
+    def getIngredientInfo(self):
+        ingredient = [str(self.ingredientName._entry_value.get()),\
+                        int(self.ingredientQuantity._entry_value.get()),\
+                        str(self.ingredientUnit._entry_value.get())]
+        print(ingredient)
+        return ingredient
+        
     
     # Read currently selected recipes and return as tupple
     def getSelectedRecipies(self):
@@ -123,12 +87,70 @@ class GUI:
         return selection
     
     
+    # Read ingredient name, quantity, unit, currently selected ingredient
+    def setIngredientInfo(self, ingredient):
+        name = str(ingredient[0])
+        quantity = str(ingredient[1])
+        unit = str(ingredient[2])
+        
+        self.ingredientName.delete(0,END)
+        self.ingredientName.insert(0, name)
+        self.ingredientQuantity.delete(0,END)
+        self.ingredientQuantity.insert(0, quantity)
+        self.ingredientUnit.delete(0,END)
+        self.ingredientUnit.insert(0, unit)
+    
+    
+    # Set the displayed list of recipes
+    def setRecipesList(self, recipesList):
+        self.recipesList = recipesList
+        self.recipeList.delete(0, END)
+        for i in range(0,len(recipesList)):
+            name = str(recipesList[i][0])
+            self.recipeList.insert(END, name)
+    
+    
+    # Set the displayed list of ingredients
+    def setIngredientList(self, ingredientList):
+        self.ingredientsList.delete(0, END)
+        for ingredient in range(0,len(ingredientList)):
+            self.ingredientsList.insert(END,str(ingredientList[ingredient][0]))
+        
+    
+    # Set the displayed individual recipe
+    def setDisplayRecipe(self,recipe):
+        # replace with "ingredients = recipe[xxx]"
+        ingredients = ["ing 1", "ing 2", "ing 3"]
+        
+        # replace with "name = recipe[yyy]"
+        name = "recipe name"
+        
+        self.recipeName.set(str(name))
+        for ingredient in ingredients:
+            self.ingredients.insert(TK.END, str(ingredient))
+    
+    
     # Initialize the GUI
     def __init__(self):
         self.action=None
         
         # Tk root widget: window with titlebar, etc
         self.root = TK.Tk()
+    
+    
+    # Display provided error message to user, print error message to console
+    def errorMessage(self, message):
+        print(str(message))
+        try: 
+            TK.messagebox.showinfo("Warning", str(message))
+        except:
+            messagebox.showinfo("Warning", str(message))
+    
+    
+    # Set most-recent action, announce button press to console
+    def buttonClicked(self, action):
+        print("\nA button was pressed:")
+        self.action = action
     
     
     # Place GUI items
@@ -203,17 +225,20 @@ class GUI:
         label = TK.Label(recipeFrame)
         label.grid(row=0, column=0, sticky=N+S+E+W)
         # Save Recipe button
-        self.recipeAddIngredient = TK.Button(recipeFrame, text="Save Recipe", command=lambda: self.buttonClicked("savR"))
+        self.recipeAddIngredient = TK.Button(recipeFrame, text="Save Recipe", command=lambda: self.buttonClicked("savR"), anchor=W)
         self.recipeAddIngredient.grid(row=1, column=0, sticky=N+S+E+W)
         # Add Ingredient Button
-        self.recipeAddIngredient = TK.Button(recipeFrame, text="Add Ingredient", command=lambda: self.buttonClicked("addI"))
+        self.recipeAddIngredient = TK.Button(recipeFrame, text="Add Ingredient", command=lambda: self.buttonClicked("addI"), anchor=W)
         self.recipeAddIngredient.grid(row=3, column=0, sticky=N+S+E+W)
+        # Edit Ingredient Button
+        self.recipeEditIngredient = TK.Button(recipeFrame, text="Edit Ingredient", command=lambda: self.buttonClicked("modI"), anchor=W)
+        self.recipeEditIngredient.grid(row=4, column=0, sticky=N+S+E+W)
         # Save Ingredient Button
-        self.recipeAddIngredient = TK.Button(recipeFrame, text="Save Ingredient", command=lambda: self.buttonClicked("savI"))
-        self.recipeAddIngredient.grid(row=4, column=0, sticky=N+S+E+W)        
+        self.recipeAddIngredient = TK.Button(recipeFrame, text="Save Ingredient", command=lambda: self.buttonClicked("savI"), anchor=W)
+        self.recipeAddIngredient.grid(row=5, column=0, sticky=N+S+E+W)        
         # Remove Ingredient Button
-        self.recipeRemoveIngredient = TK.Button(recipeFrame, text="Remove Ingredient", command=lambda: self.buttonClicked("delI"))
-        self.recipeRemoveIngredient.grid(row=5, column=0, sticky=N+S+E+W)
+        self.recipeRemoveIngredient = TK.Button(recipeFrame, text="Remove Ingredient", command=lambda: self.buttonClicked("delI"), anchor=W)
+        self.recipeRemoveIngredient.grid(row=6, column=0, sticky=N+S+E+W)
         
         # Recipe name box
         label = TK.Label(recipeFrame, text="Recipe Name:", anchor=W)
