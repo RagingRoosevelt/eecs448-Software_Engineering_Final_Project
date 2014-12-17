@@ -2,7 +2,7 @@
 #Use test case:
 #http://allrecipes.com/Recipe/Easy-Fruit-Cobbler/
 #http://allrecipes.com/Recipe/Sugar-Cookie-Icing/
-# to see it kind of work
+#Any others, just follow that format.
 
 
 #importing regular expression thing
@@ -10,7 +10,7 @@ import re
 #importing url thing
 import urllib.request
 
-#strings from allrecipes
+#some strings I'm using to extract text (from allrecipes)
 title_beg_tag = 'property="og:title" content="'
 title_end_tag = '"></meta>'
 serv_beg_tag = 'data-originalservings="'
@@ -26,7 +26,10 @@ def main():
     #title_string = findtitle(htmlstr)
     #print ('The recipe title is: ' + title_string + '\n')
     #writerecipe(title_string, htmlstr)
-    print(getrecipeparts(htmlstr))
+    recipe = getrecipeparts(htmlstr)
+    print(recipe)
+    return recipe
+    
     
 def gethtml(page_to_get):
     #getting the html (in byte form)
@@ -56,8 +59,9 @@ def findtitle(htmlstr):
             x+=1
     
         return title_string  
-    else:
-        print("No title.")
+    #else:
+        #print("No title.")
+        
 def getserv(htmlstr):        
     serv_re = re.compile(r'data-originalservings=".*" data')
     
@@ -74,8 +78,8 @@ def getserv(htmlstr):
             serv_string += htmlstr[x]
             x+=1
         return serv_string
-    else:
-        print("No servings.")
+    #else:
+        #print("No servings.")
 
 def gettime(htmlstr):
     time_re = re.compile(r'<span id="cookHoursSpan"><em>.*</em>.*</span>')
@@ -97,7 +101,7 @@ def gettime(htmlstr):
             x+=1
         return time_string
     else:
-        print("No time.")
+        return " "
 
 def gettimeunit(htmlstr):
     time_re = re.compile(r'<span id="cookHoursSpan"><em>.*</em>.*</span>')
@@ -120,7 +124,7 @@ def gettimeunit(htmlstr):
         
         return timeunit_string
     else:
-        print("No time unit.")
+        return " "
         
 def getingr(htmlstr):
     
@@ -238,9 +242,9 @@ def getrecipeparts(htmlstr):
     recipe[2][1] = gettimeunit(htmlstr)
     recipe[4] = getserv(htmlstr)
     ingr_amt_list, ingr_unit_list, ingr_name_list = getingr(htmlstr)
-    print (ingr_amt_list)
-    print (ingr_unit_list)
-    print (ingr_name_list)
+    #print (ingr_amt_list)
+    #print (ingr_unit_list)
+    #print (ingr_name_list)
     x = 0
     while x < len(ingr_unit_list):
         recipe[5].append([ingr_name_list[x],ingr_amt_list[x],ingr_unit_list[x]])
