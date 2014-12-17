@@ -27,12 +27,14 @@ from codeMODEL import Model
 
 class Controller:
     def __init__(self):
+        self.currentIngredient = [None]
+    
         self.model = Model()
     
         self.recipesList=[["cake","..."], ["pie","..."], ["pudding","..."], ["turkey","..."], ["sandwich","..."], ["stew","..."], ["soda","..."], ["chilli","..."], ["salad","..."], ["pizza","..."], ["curry","..."], ["pasta","..."], ["danish","..."]]
         self.recipesList.sort()
         
-        self.ingredientList = [["granny smith apples", 2, "ct"], ["golden raisins", 8, "oz"], ["brown sugar", 6, "oz"], ["dried figs", 4, "oz"], ["dried cherries", 2, "oz"], ["beef suet", 2, "oz"], ["crystallized ginger", 1, "oz"], ["brandy", 1/2, "cup"], ["orange, zested and jusiced", 1, "ct"], ["lemon, zested and juiced", 1, "ct"], ["nutmeg", 1/2, "teaspoon"], ["allspice", 1/4, "teaspoon"], ["clove", 1/4, "teaspoon"]]
+        self.ingredientList = [["granny smith apples", 2, "ct"], ["golden raisins", 8, "oz"], ["brown sugar", 6, "oz"], ["dried figs", 4, "oz"], ["dried cherries", 2, "oz"], ["beef suet", 2, "oz"], ["crystallized ginger", 1, "oz"], ["brandy", 1/2, "cup"], ["orange, zested and jusiced", 1, "ct"], ["lemon, zested and juiced", 1, "ct"], ["nutmeg", 1/2, "teaspoon"], ["allspice", 1/4, "teaspoon"], ["cloves", 1/4, "teaspoon"]]
 
         self.gui = GUI()
         self.gui.buildGUI()
@@ -72,7 +74,8 @@ class Controller:
                     self.gui.root.update()
                     
                     print(self.recipesList)
-                
+            
+            
             ############################
             # DELETE INGREDIENT ACTION #
             ############################
@@ -87,12 +90,14 @@ class Controller:
                     self.ingredientList = self.model.removeIngredient(self.ingredientList, selection)
                     self.gui.setIngredientList(self.ingredientList)
                     self.gui.root.update()
-                
+            
+            
             ##########################
             # EDIT INGREDIENT ACTION #
             ##########################
             elif action=="modI":
                 selection = self.gui.getSelectedIngredient()
+                self.currentIngredient = selection
                 
                 if len(selection)==0:
                     self.gui.errorMessage("No ingredient was selected. Please try again.")
@@ -102,6 +107,42 @@ class Controller:
                     
                     self.gui.setIngredientInfo(self.ingredientList[selection])
                     self.gui.root.update()
+            
+            
+            ##########################
+            # SAVE INGREDIENT ACTION #
+            ##########################
+            elif action=="savI":
+                selection = self.currentIngredient[0]
+                
+                updatedIngredient = self.gui.getIngredientInfo()
+                
+                print("Updated ingredient: " + str(updatedIngredient))
+                
+                self.ingredientList[selection] = updatedIngredient
+                self.ingredientList.sort()
+                self.currentIngredient[0] = None
+                
+                self.gui.setIngredientInfo(["","",""])
+                self.gui.setIngredientList(self.ingredientList)
+                self.gui.root.update()
+            
+            
+            #########################
+            # ADD INGREDIENT ACTION #
+            #########################
+            elif action=="addI":
+                selection = len(self.ingredientList)
+                self.currentIngredient[0] = selection
+                self.ingredientList.append(["???", 0, "???"])
+                
+                self.gui.setIngredientList(self.ingredientList)
+                self.gui.setIngredientInfo(self.ingredientList[selection])
+                self.gui.root.update()
+                
+                updatedIngredient = self.gui.getIngredientInfo()
+                
+                print("Added ingredient")
             
             
             #######################

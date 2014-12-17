@@ -15,6 +15,8 @@ except ImportError: # python v3.X
     from tkinter import N, S, E, W, END, LEFT, RIGHT
     from tkinter import messagebox
 
+
+
 class popupWindow(object):
     def __init__(self, master, message):
         top = self.top = TK.Toplevel(master)
@@ -51,16 +53,15 @@ class GUI:
     
     # Read and return recipe name from input box
     def getRecipeName(self):
-        name = self.recipeName._entry_value.get()
+        name = self.recipeName.get()
         return name
     
     
     # Read ingredient name, quantity, unit, currently selected ingredient
     def getIngredientInfo(self):
-        ingredient = [str(self.ingredientName._entry_value.get()),\
-                        int(self.ingredientQuantity._entry_value.get()),\
-                        str(self.ingredientUnit._entry_value.get())]
-        print(ingredient)
+        ingredient = [str(self.ingredientName.get()),\
+                        float(self.ingredientQuantity.get()),\
+                        str(self.ingredientUnit.get())]
         return ingredient
         
     
@@ -114,7 +115,7 @@ class GUI:
     def setIngredientList(self, ingredientList):
         self.ingredientsList.delete(0, END)
         for ingredient in range(0,len(ingredientList)):
-            self.ingredientsList.insert(END,str(ingredientList[ingredient][0]))
+            self.ingredientsList.insert(END,str(ingredientList[ingredient][0]) + ", " + str(ingredientList[ingredient][1]) + " " + str(ingredientList[ingredient][2]))
         
     
     # Set the displayed individual recipe
@@ -242,39 +243,39 @@ class GUI:
         
         # Recipe name box
         label = TK.Label(recipeFrame, text="Recipe Name:", anchor=W)
-        label.grid(row=0, column=1, sticky=N+S+E+W)
+        label.grid(row=0, column=1, columnspan=2, sticky=N+S+E+W)
         self.recipeName = TK.Entry(recipeFrame)
         self.recipeName.insert(0, "test")
-        self.recipeName.grid(row=1, column=1, rowspan=1, sticky=N+S+E+W)
+        self.recipeName.grid(row=1, column=1, columnspan=2, rowspan=1, sticky=N+S+E+W)
         # Ingredient list scrollbar setup
         scrollbar = TK.Scrollbar(recipeFrame)
-        scrollbar.grid(row=3, column=2, rowspan=100, sticky=N+S)
+        scrollbar.grid(row=3, column=3, rowspan=100, sticky=N+S)
         # Ingredient list
         label = TK.Label(recipeFrame, text="Ingredients:", anchor=W)
-        label.grid(row=2, column=1, sticky=N+S+E+W)
+        label.grid(row=2, column=1, columnspan=2, sticky=N+S+E+W)
         self.ingredientsList = TK.Listbox(recipeFrame, selectmode=TK.BROWSE)
-        self.ingredientsList.grid(row=3, column=1, rowspan=100, sticky=N+S+E+W)
+        self.ingredientsList.grid(row=3, column=1, columnspan=2, rowspan=100, sticky=N+S+E+W)
         # Ingredient list scrollbar config
         self.ingredientsList.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.ingredientsList.yview)
                 
         # Ingredient entry:
         label = TK.Label(recipeFrame)
-        label.grid(row=0, column=3, rowspan=3, sticky=N+S+E+W)
+        label.grid(row=0, column=4, rowspan=3, sticky=N+S+E+W)
         label = TK.Label(recipeFrame, text="Ingredient:", anchor=W)
-        label.grid(row=3, column=3, sticky=N+S+E+W)
+        label.grid(row=3, column=4, sticky=N+S+E+W)
         self.ingredientName = TK.Entry(recipeFrame)
-        self.ingredientName.grid(row=4, column=3, sticky=N+S+E+W)
+        self.ingredientName.grid(row=4, column=4, sticky=N+S+E+W)
         # Ingredient quantity
         label = TK.Label(recipeFrame, text="Quantity:", anchor=W)
-        label.grid(row=5, column=3, sticky=N+S+E+W)
+        label.grid(row=5, column=4, sticky=N+S+E+W)
         self.ingredientQuantity = TK.Entry(recipeFrame)
-        self.ingredientQuantity.grid(row=6, column=3, sticky=N+S+E+W)
+        self.ingredientQuantity.grid(row=6, column=4, sticky=N+S+E+W)
         # Ingredient units
         label = TK.Label(recipeFrame, text="Unit:", anchor=W)
-        label.grid(row=7, column=3, sticky=N+S+E+W)
+        label.grid(row=7, column=4, sticky=N+S+E+W)
         self.ingredientUnit = TK.Entry(recipeFrame)
-        self.ingredientUnit.grid(row=8, column=3, sticky=N+S+E+W)
+        self.ingredientUnit.grid(row=8, column=4, sticky=N+S+E+W)
         
         ##################
         # PROCEDURE AREA #
