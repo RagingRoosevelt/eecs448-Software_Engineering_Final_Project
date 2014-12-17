@@ -11,3 +11,4 @@ parse.py
 *.synctex.gz
 *.toc
 *.pyc
+test/
