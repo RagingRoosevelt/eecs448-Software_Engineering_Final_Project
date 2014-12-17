@@ -118,7 +118,10 @@ class Model:
     
     # Converts list of lists to string and writes to file
     # Returns nothing
-    def writeRecipe(self, directory, filename, recipe):    
+    def writeRecipe(self, directory, filename, recipe):  
+
+        if directory == "":
+            directory = os.getcwd()
         
         if not os.path.isdir(directory):
             os.makedirs(directory)
@@ -155,7 +158,15 @@ class Model:
         file.close()
         
     def writeLaTeX(self, directory, filename, recipeList):
+        
+        if directory == "":
+            directory = os.getcwd() + "\\"
+        if filename == "":
+            filename = "output"
+            
         print(directory)
+        print(filename)
+        
         if not os.path.isdir(directory):
             os.makedirs(directory)
         
@@ -196,8 +207,8 @@ class Model:
         file.close()
         
         call(['pdflatex', "-output-directory="+directory , directory + filename + ".tex"], shell=False)
-        #os.remove(directory+filename+".aux")
-        #os.remove(directory+filename+".log")
+        os.remove(directory+filename+".aux")
+        os.remove(directory+filename+".log")
         
         
         

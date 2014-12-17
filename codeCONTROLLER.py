@@ -31,28 +31,7 @@ class Controller:
     
         self.model = Model()
     
-        self.recipesList=[["cake","filepath",[3,"hours"],[350,"F"],4,\
-                                [["granny smith apples", 2, "ct"], ["golden raisins", 8, "oz"], ["brown sugar", 6, "oz"], ["dried figs", 4, "oz"], ["dried cherries", 2, "oz"], ["beef suet", 2, "oz"], ["crystallized ginger", 1, "oz"], ["brandy", 1/2, "cup"], ["orange, zested and jusiced", 1, "ct"], ["lemon, zested and juiced", 1, "ct"], ["nutmeg", 1/2, "teaspoon"], ["allspice", 1/4, "teaspoon"], ["cloves", 1/4, "teaspoon"]],\
-                                "cook it!"], \
-                        ["pie","FILEPATH",[3,"hours"],[350,"F"],4,\
-                                [["pie ingredients", 2, "ct"]],\
-                                "cook it!"], \
-                        ["pudding","FILEPATH",[3,"hours"],[0,""],4,\
-                                [["pudding ingredients", 2, "ct"]],\
-                                "pudding it!"], \
-                        ["turkey","FILEPATH",[3,"hours"],[300,"F"],4,\
-                                [["turkey ingredients", 2, "ct"]],\
-                                "cook it!"], \
-                        ["sandwich","FILEPATH",[3,"hours"],[0,""],4,\
-                                [["sandwich ingredients", 2, "ct"]],\
-                                "cook it!"], \
-                        ["stew","FILEPATH",[3,"hours"],[350,"F"],4,\
-                                [["stew ingredients", 2, "ct"]],\
-                                "cook it!"], \
-                        ["soda","FILEPATH",[3,"hours"],[350,"F"],4,\
-                                [["soda ingredients", 2, "ct"]],\
-                                "cook it!"]]
-        self.recipesList.sort()
+        self.recipesList=[]
         
         self.currentIngredientList = []
         self.currentRecipeIndex = []
@@ -211,6 +190,7 @@ class Controller:
                     self.currentRecipe[3] = self.gui.getBaketemp()
                     
                     self.recipesList[self.currentRecipeIndex[0]] = self.currentRecipe
+                    self.recipesList.sort()
                     self.gui.setRecipesList(self.recipesList)
                     self.gui.setIngredientInfo([])
                     self.gui.setIngredientList([])
@@ -237,10 +217,13 @@ class Controller:
                 self.currentRecipeIndex = [len(self.recipesList)]
                 
                 self.recipesList.append(["???","",[0,""],[0,""],0,[["", 0, ""]],""])
+                self.recipesList.sort()
                 self.gui.setRecipesList(self.recipesList)
                 self.gui.root.update()
+
+                self.currentRecipeIndex = []
                 
-                print("New recipe entry created at index: " + str(self.currentRecipeIndex[0]))
+                print("New recipe entry created")
             
             
             ##################
@@ -287,7 +270,7 @@ class Controller:
                 # Ask user for directory
                 directory = self.gui.getInfo("desDir")
                 if directory == "":
-                    self.gui.errorMessage("Using current working directory for source directory")
+                    self.gui.errorMessage("No directory provided.  Using current working directory for source directory")
                 
                 for recipe in self.recipesList:
                     directory = str(directory) + "/"
@@ -303,7 +286,14 @@ class Controller:
                 directory = self.gui.getInfo("desDir")
                 filename = self.gui.getInfo("desFile")
                 
-                self.model.writeLaTeX("E:\\Dropbox\\Documents (current)\\eecs 448 (F'14)\\eecs448fp\\test\\", "test", self.recipesList)
+                if directory == "":
+                    self.gui.errorMessage("No directory provided.  Using current working directory for source directory")
+                
+                if filename == "":
+                    self.gui.errorMessage("No filename provided.  Using \"output\" as filename.")
+                    
+                
+                self.model.writeLaTeX(directory, filename, self.recipesList)
                     
                     
             ###############
