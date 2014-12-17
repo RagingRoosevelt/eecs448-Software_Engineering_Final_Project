@@ -114,6 +114,7 @@ class GUI:
     # Set the displayed list of ingredients
     def setIngredientList(self, ingredientList):
         self.ingredientsList.delete(0, END)
+        print(ingredientList)
         for ingredient in range(0,len(ingredientList)):
             self.ingredientsList.insert(END,str(ingredientList[ingredient][0]) + ", " + str(ingredientList[ingredient][1]) + " " + str(ingredientList[ingredient][2]))
         
@@ -122,13 +123,15 @@ class GUI:
     def setDisplayRecipe(self,recipe):
         # replace with "ingredients = recipe[xxx]"
         ingredients = ["ing 1", "ing 2", "ing 3"]
+        ingredients = recipe[5]
         
         # replace with "name = recipe[yyy]"
-        name = "recipe name"
+        name = recipe[0]
         
-        self.recipeName.set(str(name))
-        for ingredient in ingredients:
-            self.ingredients.insert(TK.END, str(ingredient))
+        self.recipeName.delete(0,END)
+        self.recipeName.insert(0,str(name))
+        
+        self.setIngredientList(ingredients)
     
     
     # Initialize the GUI
@@ -190,13 +193,13 @@ class GUI:
         self.buttonLoad = TK.Button(buttonsFrame, text="Load Recipes", command=lambda: self.buttonClicked("load"), anchor=W)
         self.buttonLoad.grid(row=1, column=0, sticky=N+S+E+W)
         # Add recipe
-        self.buttonAdd = TK.Button(buttonsFrame, text="Add Recipe", command=lambda: self.buttonClicked("add"), anchor=W)
+        self.buttonAdd = TK.Button(buttonsFrame, text="Add Recipe", command=lambda: self.buttonClicked("addR"), anchor=W)
         self.buttonAdd.grid(row=2, column=0, sticky=N+S+E+W)
         # Modify recipe
-        self.buttonModify = TK.Button(buttonsFrame, text="Edit Recipe", command=lambda: self.buttonClicked("mod"), anchor=W)
+        self.buttonModify = TK.Button(buttonsFrame, text="Edit Recipe", command=lambda: self.buttonClicked("modR"), anchor=W)
         self.buttonModify.grid(row=3, column=0, sticky=N+S+E+W)
         # Remove recipe
-        self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("del"), anchor=W)
+        self.buttonRemove = TK.Button(buttonsFrame, text="Remove Recipe", command=lambda: self.buttonClicked("delR"), anchor=W)
         self.buttonRemove.grid(row=4, column=0, sticky=N+S+E+W)
         # Quit
         self.buttonQuit = TK.Button(buttonsFrame, text="Quit", command=lambda: self.buttonClicked("quit"), anchor=W)
@@ -245,7 +248,7 @@ class GUI:
         label = TK.Label(recipeFrame, text="Recipe Name:", anchor=W)
         label.grid(row=0, column=1, columnspan=2, sticky=N+S+E+W)
         self.recipeName = TK.Entry(recipeFrame)
-        self.recipeName.insert(0, "test")
+        self.recipeName.insert(0, "")
         self.recipeName.grid(row=1, column=1, columnspan=2, rowspan=1, sticky=N+S+E+W)
         # Ingredient list scrollbar setup
         scrollbar = TK.Scrollbar(recipeFrame)

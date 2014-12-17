@@ -27,20 +27,47 @@ from codeMODEL import Model
 
 class Controller:
     def __init__(self):
-        self.currentIngredient = [None]
     
         self.model = Model()
     
-        self.recipesList=[["cake","..."], ["pie","..."], ["pudding","..."], ["turkey","..."], ["sandwich","..."], ["stew","..."], ["soda","..."], ["chilli","..."], ["salad","..."], ["pizza","..."], ["curry","..."], ["pasta","..."], ["danish","..."]]
+        self.recipesList=[["cake","filepath",[3,"hours"],[350,"F"],4,\
+                                [["granny smith apples", 2, "ct"], ["golden raisins", 8, "oz"], ["brown sugar", 6, "oz"], ["dried figs", 4, "oz"], ["dried cherries", 2, "oz"], ["beef suet", 2, "oz"], ["crystallized ginger", 1, "oz"], ["brandy", 1/2, "cup"], ["orange, zested and jusiced", 1, "ct"], ["lemon, zested and juiced", 1, "ct"], ["nutmeg", 1/2, "teaspoon"], ["allspice", 1/4, "teaspoon"], ["cloves", 1/4, "teaspoon"]],\
+                                "cook it!"], \
+                        ["pie","FILEPATH",[3,"hours"],[350,"F"],4,\
+                                [["pie ingredients", 2, "ct"]],\
+                                "cook it!"], \
+                        ["pudding","FILEPATH",[3,"hours"],[0,""],4,\
+                                [["pudding ingredients", 2, "ct"]],\
+                                "pudding it!"], \
+                        ["turkey","FILEPATH",[3,"hours"],[300,"F"],4,\
+                                [["turkey ingredients", 2, "ct"]],\
+                                "cook it!"], \
+                        ["sandwich","FILEPATH",[3,"hours"],[0,""],4,\
+                                [["sandwich ingredients", 2, "ct"]],\
+                                "cook it!"], \
+                        ["stew","FILEPATH",[3,"hours"],[350,"F"],4,\
+                                [["stew ingredients", 2, "ct"]],\
+                                "cook it!"], \
+                        ["soda","FILEPATH",[3,"hours"],[350,"F"],4,\
+                                [["soda ingredients", 2, "ct"]],\
+                                "cook it!"]]
         self.recipesList.sort()
         
-        self.ingredientList = [["granny smith apples", 2, "ct"], ["golden raisins", 8, "oz"], ["brown sugar", 6, "oz"], ["dried figs", 4, "oz"], ["dried cherries", 2, "oz"], ["beef suet", 2, "oz"], ["crystallized ginger", 1, "oz"], ["brandy", 1/2, "cup"], ["orange, zested and jusiced", 1, "ct"], ["lemon, zested and juiced", 1, "ct"], ["nutmeg", 1/2, "teaspoon"], ["allspice", 1/4, "teaspoon"], ["cloves", 1/4, "teaspoon"]]
+        self.currentIngredientList = []
+        self.currentRecipeIndex = []
+        self.currentRecipe = []
+        self.currentIngredientIndex = []
+        self.currentIngredientList = []
+        
+        
+        #self.currentRecipe = None
+        #self.currentRecipeSelection = None
 
         self.gui = GUI()
         self.gui.buildGUI()
         
         self.gui.setRecipesList(self.recipesList)
-        self.gui.setIngredientList(self.ingredientList)
+        self.gui.setIngredientList(self.currentIngredientList)
         
         self.gui.root.update()
 
@@ -61,34 +88,35 @@ class Controller:
             #########################
             # DELETE RECIPES ACTION #
             #########################
-            if action=="del":
-                selection = self.gui.getSelectedRecipies()
+            if action=="delR":
+                self.currentRecipeIndex = self.gui.getSelectedRecipies()
+                print(self.currentRecipeIndex)
                 
-                if len(selection)==0:
+                if len(self.currentRecipeIndex)==0:
                     self.gui.errorMessage("No recipe was selected. Please try again.")
                 else:
-                    print("The following recipe indices were selected to be removed: " + str(selection))
+                    print("The following recipe indices were selected to be removed: " + str(self.currentRecipeIndex))
                 
-                    self.recipesList = self.model.removeRecipes(self.recipesList, selection)
+                    self.recipesList = self.model.removeRecipes(self.recipesList, self.currentRecipeIndex)
                     self.gui.setRecipesList(self.recipesList)
                     self.gui.root.update()
                     
-                    print(self.recipesList)
+                    self.currentRecipeIndex = []
             
             
             ############################
             # DELETE INGREDIENT ACTION #
             ############################
             elif action=="delI":
-                selection = self.gui.getSelectedIngredient()
+                self.currentIngredientIndex = self.gui.getSelectedIngredient()
                 
-                if len(selection)==0:
+                if len(self.currentIngredientIndex)==0:
                     self.gui.errorMessage("No ingredient was selected. Please try again.")
                 else:
-                    selection = selection[0]
-                    print("The following ingredient index was selected to be removed: " + str(selection))
-                    self.ingredientList = self.model.removeIngredient(self.ingredientList, selection)
-                    self.gui.setIngredientList(self.ingredientList)
+                    self.currentIngredientIndex = self.currentIngredientIndex[0]
+                    print("The following ingredient index was selected to be removed: " + str(self.currentIngredientIndex))
+                    self.currentIngredientList = self.model.removeIngredient(self.currentIngredientList, self.currentIngredientIndex)
+                    self.gui.setIngredientList(self.currentIngredientList)
                     self.gui.root.update()
             
             
@@ -96,16 +124,16 @@ class Controller:
             # EDIT INGREDIENT ACTION #
             ##########################
             elif action=="modI":
-                selection = self.gui.getSelectedIngredient()
-                self.currentIngredient = selection
+                self.currentIngredientIndex = self.gui.getSelectedIngredient()
+                print(self.currentIngredientIndex)
+                self.currentIngredient = self.currentIngredientIndex
                 
-                if len(selection)==0:
+                if len(self.currentIngredientIndex)==0:
                     self.gui.errorMessage("No ingredient was selected. Please try again.")
                 else:
-                    selection = selection[0]
-                    print("The following ingredient index was selected to be modified: " + str(selection))
+                    print("The following ingredient index was selected to be modified: " + str(self.currentIngredientIndex[0]))
                     
-                    self.gui.setIngredientInfo(self.ingredientList[selection])
+                    self.gui.setIngredientInfo(self.currentIngredientList[self.currentIngredientIndex[0]])
                     self.gui.root.update()
             
             
@@ -113,34 +141,34 @@ class Controller:
             # SAVE INGREDIENT ACTION #
             ##########################
             elif action=="savI":
-                selection = self.currentIngredient[0]
-                
-                updatedIngredient = self.gui.getIngredientInfo()
-                
-                print("Updated ingredient: " + str(updatedIngredient))
-                
-                self.ingredientList[selection] = updatedIngredient
-                self.ingredientList.sort()
-                self.currentIngredient[0] = None
-                
-                self.gui.setIngredientInfo(["","",""])
-                self.gui.setIngredientList(self.ingredientList)
-                self.gui.root.update()
-            
+                print(str(self.currentIngredientIndex))
+                if len(self.currentIngredientIndex)==0:
+                    self.gui.errorMessage("No ingredient is active. Please try again.")
+                else:
+                    self.currentIngredientList[self.currentIngredientIndex[0]] = self.gui.getIngredientInfo()
+                    
+                    print("Updated ingredient: " + str(self.currentIngredientList[self.currentIngredientIndex[0]]))
+                    
+                    self.currentIngredientList.sort()
+                    self.currentIngredientIndex = []
+                    
+                    self.gui.setIngredientInfo(["","",""])
+                    self.gui.setIngredientList(self.currentIngredientList)
+                    self.gui.root.update()
+                    
             
             #########################
             # ADD INGREDIENT ACTION #
             #########################
             elif action=="addI":
-                selection = len(self.ingredientList)
-                self.currentIngredient[0] = selection
-                self.ingredientList.append(["???", 0, "???"])
+                self.currentIngredientIndex = [len(self.currentIngredientList)]
+                self.currentIngredientList.append(["???", 0, ""])
                 
-                self.gui.setIngredientList(self.ingredientList)
-                self.gui.setIngredientInfo(self.ingredientList[selection])
+                self.gui.setIngredientList(self.currentIngredientList)
+                self.gui.setIngredientInfo(self.currentIngredientList[self.currentIngredientIndex[0]])
                 self.gui.root.update()
                 
-                updatedIngredient = self.gui.getIngredientInfo()
+                self.currentIngredientList[self.currentIngredientIndex[0]] = self.gui.getIngredientInfo()
                 
                 print("Added ingredient")
             
@@ -148,23 +176,45 @@ class Controller:
             #######################
             # EDIT RECIPES ACTION #
             #######################
-            elif action=="mod":
-                selection = self.gui.getSelectedRecipies()
-                if len(selection)==1:
-                    selection = int(selection[0])
-                    print("The following recipe index was selected to be edited: " + str(selection) + "  (" + str(self.recipesList[selection][0]) + ")")
-                elif len(selection)==0:
+            elif action=="modR":
+                self.currentRecipeIndex  = self.gui.getSelectedRecipies()
+                if len(self.currentRecipeIndex)==1:
+                    print("The following recipe index was selected to be edited: " + str(self.currentRecipeIndex[0]) + "  (" + str(self.recipesList[self.currentRecipeIndex[0]][0]) + ")")
+                    
+                    self.currentRecipe = self.recipesList[self.currentRecipeIndex[0]]
+                    self.currentRecipeSelection = self.currentRecipeIndex[0] 
+                    
+                    self.currentIngredientList = self.currentRecipe[5]
+                    
+                    self.gui.setDisplayRecipe(self.currentRecipe)
+                    
+                elif len(self.currentRecipeIndex)==0:
                     self.gui.errorMessage("No recipe was selected. Please try again.")
                 else:
                     self.gui.errorMessage("Too many recipes selected. Please try again.")
+            
+            
+            #######################
+            # SAVE RECIPES ACTION #
+            #######################
+            elif action=="savR":
+                if self.currentRecipe == None:
+                    self.gui.errorMessage("No recipe is active. Please try again.")
+                else:
+                    print("Saving recipe")
                     
                     
             #####################
             # ADD RECIPE ACTION #
             #####################
-            elif action=="add":
-                index = 123123
-                print("New recipe entry created at index: " + str(index))
+            elif action=="addR":
+                self.currentRecipeIndex = [len(self.recipesList)]
+                
+                self.recipesList.append(["???","",[0,""],[0,""],0,[["", 0, ""]],""])
+                self.gui.setRecipesList(self.recipesList)
+                self.gui.root.update()
+                
+                print("New recipe entry created at index: " + str(self.currentRecipeIndex[0]))
                 
                 
             #######################
