@@ -32,6 +32,32 @@ class popupWindow(object):
 
 
 class GUI:
+    # Get baketime
+    def getBaketime(self):
+        return [self.bakeTime.get(), self.bakeTimeUnit.get()]
+        
+    # set baketime
+    def setBaketime(self, baketime):
+        self.bakeTime.delete(0,END)
+        self.bakeTimeUnit.delete(0,END)
+        if baketime != []:
+            self.bakeTime.insert(END, str(baketime[0]))
+            self.bakeTimeUnit.insert(END, str(baketime[1]))
+        
+
+    # Get baketemp
+    def getBaketemp(self):
+        return [self.bakeTemp.get(), self.bakeTempUnit.get()]
+        
+    # set baketemp
+    def setBaketemp(self, baketemp):
+        self.bakeTemp.delete(0,END)
+        self.bakeTempUnit.delete(0,END)
+        if baketemp != []:
+            self.bakeTemp.insert(END, str(baketemp[0]))
+            self.bakeTempUnit.insert(END, str(baketemp[1]))
+        
+
     # Get procedure
     def getProcedure(self):
         return self.procedure.get("0.0",END)
@@ -296,6 +322,7 @@ class GUI:
         scrollbar.config(command=self.ingredientsList.yview)
                 
         # Ingredient entry:
+        # spacer
         label = TK.Label(recipeFrame)
         label.grid(row=0, column=4, rowspan=3, sticky=N+S+E+W)
         label = TK.Label(recipeFrame, text="Ingredient:", anchor=W)
@@ -312,6 +339,29 @@ class GUI:
         label.grid(row=7, column=4, sticky=N+S+E+W)
         self.ingredientUnit = TK.Entry(recipeFrame)
         self.ingredientUnit.grid(row=8, column=4, sticky=N+S+E+W)
+        #spacer
+        label = TK.Label(recipeFrame)
+        label.grid(row=0, column=5, rowspan=8, sticky=N+S+E+W)
+        # Bake time
+        label = TK.Label(recipeFrame, text="Bake time:", anchor=W)
+        label.grid(row=0, column=6, sticky=N+S+E+W)
+        self.bakeTime = TK.Entry(recipeFrame)
+        self.bakeTime.grid(row=1, column=6, sticky=N+S+E+W)
+        # Bake time unit
+        label = TK.Label(recipeFrame, text="Bake time units:", anchor=W)
+        label.grid(row=2, column=6, sticky=N+S+E+W)
+        self.bakeTimeUnit = TK.Entry(recipeFrame)
+        self.bakeTimeUnit.grid(row=3, column=6, sticky=N+S+E+W)
+        # Bake temp
+        label = TK.Label(recipeFrame, text="Bake temp:", anchor=W)
+        label.grid(row=4, column=6, sticky=N+S+E+W)
+        self.bakeTemp = TK.Entry(recipeFrame)
+        self.bakeTemp.grid(row=5, column=6, sticky=N+S+E+W)
+        # Bake temp unit
+        label = TK.Label(recipeFrame, text="Bake temp units:", anchor=W)
+        label.grid(row=6, column=6, sticky=N+S+E+W)
+        self.bakeTempUnit = TK.Entry(recipeFrame)
+        self.bakeTempUnit.grid(row=7, column=6, sticky=N+S+E+W)
         
         ##################
         # PROCEDURE AREA #

@@ -178,7 +178,8 @@ class Model:
         
             file.write("\n\\begin{recipe}{" + recipe[0] + "}{" + str(recipe[4]) + " servings}{")
 
-            if (recipe[2][0]!=0) and (recipe[3][0]!=0):
+            print(str(recipe[2][0]) + " and " + str(recipe[3][0]))
+            if (recipe[2][1]!="") and (recipe[3][1]!=None):
                 file.write(str(recipe[2][0]) + " " + str(recipe[2][1]) + " at " + str(recipe[3][0]) + "$^{\circ}$" + str(recipe[3][1]) )
             
             file.write("}")

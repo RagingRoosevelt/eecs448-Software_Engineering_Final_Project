@@ -185,6 +185,8 @@ class Controller:
                     
                     self.gui.setDisplayRecipe(self.currentRecipe)
                     self.gui.setProcedure(self.currentRecipe[6])
+                    self.gui.setBaketime(self.currentRecipe[2])
+                    self.gui.setBaketemp(self.currentRecipe[3])
                     
                 elif len(self.currentRecipeIndex)==0:
                     self.gui.errorMessage("No recipe was selected. Please try again.")
@@ -205,6 +207,8 @@ class Controller:
                     
                     self.currentRecipe[0] = self.gui.getRecipeName()
                     self.currentRecipe[6] = self.gui.getProcedure()
+                    self.currentRecipe[2] = self.gui.getBaketime()
+                    self.currentRecipe[3] = self.gui.getBaketemp()
                     
                     self.recipesList[self.currentRecipeIndex[0]] = self.currentRecipe
                     self.gui.setRecipesList(self.recipesList)
@@ -213,6 +217,8 @@ class Controller:
                     self.gui.setRecipeName("")
                     self.gui.setProcedure("")
                     self.gui.root.update()
+                    self.gui.setBaketime([])
+                    self.gui.setBaketemp([])
                     
                     print(self.recipesList[self.currentRecipeIndex[0]])
                     
