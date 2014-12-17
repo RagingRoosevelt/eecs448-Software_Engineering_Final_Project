@@ -26,7 +26,7 @@ def main():
     #title_string = findtitle(htmlstr)
     #print ('The recipe title is: ' + title_string + '\n')
     #writerecipe(title_string, htmlstr)
-    getrecipeparts(htmlstr)
+    print(getrecipeparts(htmlstr))
     
 def gethtml(page_to_get):
     #getting the html (in byte form)
@@ -121,25 +121,135 @@ def gettimeunit(htmlstr):
         return timeunit_string
     else:
         print("No time unit.")
+        
+def getingr(htmlstr):
+    
+    #some strings
+    beg_amtstr = '<span id="lblIngAmount" class="ingredient-amount">'
+    beg_namestr = '<span id="lblIngName" class="ingredient-name">'
+    end_str = '</span>'
+    
+    #the regular expressions
+    ingr_amt_re = re.compile(r'<span id="lblIngAmount" class="ingredient-amount">.*</span>')
+    ingr_name_re = re.compile(r'<span id="lblIngName" class="ingredient-name">.*</span>')
+    
+    #finding matches
+    #ingr_amt_m = ingr_amt_re.findall(htmlstr)
+    #ingr_name_m = ingr_name_re.findall(htmlstr)
+    
+    #print (ingr_amt_m)
+    #print (ingr_name_m)
+    
+    ingr_amt_iterator = ingr_amt_re.finditer(htmlstr)
+    ingr_name_iterator = ingr_name_re.finditer(htmlstr)
+
+    ingr_amt_list = []
+    ingr_unit_list = []
+    ingr_name_list = []
+    
+    for match in ingr_amt_iterator:
+        ingr_amt_str = ""
+        x = match.span()[0]
+        y = match.span()[1]
+        x = x + len(beg_amtstr)
+        y = y - len(end_str)
+        while x < y:
+            ingr_amt_str += htmlstr[x]
+            x+=1
+            
+        #splitting, formatting, gonna get hairy here
+        quick_re_1 = re.compile(r'\d')
+        quick_m_1 = quick_re_1.search(ingr_amt_str)
+        quick_re_2 = re.compile(r'\d/\d')
+        quick_m_2 = quick_re_2.search(ingr_amt_str)
+        if quick_m_1:
+            if quick_m_2:
+                lmnop = ""
+                l = quick_m_2.span()[0]
+                m = quick_m_2.span()[1]
+                while l < m:
+                    lmnop += ingr_amt_str[l]
+                    l+=1
+                ingr_amt_list.append(lmnop)
+            else:
+                lmnop = ""
+                l = quick_m_1.span()[0]
+                m = quick_m_1.span()[1]
+                while l < m:
+                    lmnop += ingr_amt_str[l]
+                    l+=1
+                ingr_amt_list.append(lmnop)
+        else:
+            ingr_amt_list.append(" ")
+            
+            
+        quick_re_3 = re.compile(r'[a-z]+')
+        quick_m_3 = quick_re_3.search(ingr_amt_str)
+        xyzzy = ""
+        if quick_m_3:
+            k = quick_m_3.span()[0]
+            u = quick_m_3.span()[1]
+            while k < u:
+                xyzzy += ingr_amt_str[k]
+                k+=1
+            ingr_unit_list.append(xyzzy)
+        else:
+            ingr_unit_list.append(" ")
+        
+    for match in ingr_name_iterator:
+        ingr_name_str = ""
+        x = match.span()[0]
+        y = match.span()[1]
+        x = x + len(beg_namestr)
+        y = y - len(end_str)
+        while x < y:
+            ingr_name_str += htmlstr[x]
+            x+=1
+        ingr_name_list.append(ingr_name_str)
+        
+    return ingr_amt_list, ingr_unit_list, ingr_name_list
+    
+def getproc(htmlstr):
+    beg_proc_str = '<li><span class="plaincharacterwrap break">'
+    end_proc_str = '</span></li>'
+    
+    proc_str = ""
+    
+    proc_re = re.compile(r'<li><span class="plaincharacterwrap break">.*</span></li>')
+    proc_iterator = proc_re.finditer(htmlstr)
+    for match in proc_iterator:
+        temp_str = ""
+        x = match.span()[0]
+        y = match.span()[1]
+        x = x + len(beg_proc_str)
+        y = y - len(end_proc_str)
+        while x < y:
+            temp_str += htmlstr[x]
+            x+=1
+        proc_str += (' ' + temp_str)
+    
+    return proc_str
+        
     
 def getrecipeparts(htmlstr):
-    recipe = []
-    for i in range(5):
-        recipe.append([])
-    recipe[2].append([])
-    recipe[2].append([])
-    recipe[3].append([])
-    recipe[3].append([])
+    recipe = ["","",[0,""],[0,""],0,[],""]
     recipe[0] = findtitle(htmlstr)
-    recipe[1] = getserv(htmlstr)
     recipe[2][0] = gettime(htmlstr)
     recipe[2][1] = gettimeunit(htmlstr)
+    recipe[4] = getserv(htmlstr)
+    ingr_amt_list, ingr_unit_list, ingr_name_list = getingr(htmlstr)
+    print (ingr_amt_list)
+    print (ingr_unit_list)
+    print (ingr_name_list)
+    x = 0
+    while x < len(ingr_unit_list):
+        recipe[5].append([ingr_name_list[x],ingr_amt_list[x],ingr_unit_list[x]])
+        x+=1
+    recipe[6] = getproc(htmlstr)
     
-    print (recipe[0])
-    print (recipe[1])
-    print (recipe[2][0])
-    print (recipe[2][1])
-    print (recipe[3][0])
-    print (recipe[3][1])
-    print (recipe)
+    return recipe
+    #print(ingr_amt_list)
+    #print(ingr_unit_list)
+    #print(ingr_name_list)
+    #print (recipe)
 main()
