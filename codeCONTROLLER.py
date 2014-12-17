@@ -58,10 +58,6 @@ class Controller:
         self.currentRecipe = []
         self.currentIngredientIndex = []
         self.currentIngredientList = []
-        
-        
-        #self.currentRecipe = None
-        #self.currentRecipeSelection = None
 
         self.gui = GUI()
         self.gui.buildGUI()
@@ -198,10 +194,30 @@ class Controller:
             # SAVE RECIPES ACTION #
             #######################
             elif action=="savR":
-                if self.currentRecipe == None:
+                if len(self.currentRecipeIndex) == 0:
                     self.gui.errorMessage("No recipe is active. Please try again.")
+                elif len(self.currentRecipeIndex) > 1:
+                    self.gui.errorMessage("Too many active recipes. Please try again.")
                 else:
                     print("Saving recipe")
+                    
+                    self.currentRecipe[0] = self.gui.getRecipeName()
+                    
+                    self.recipesList[self.currentRecipeIndex[0]] = self.currentRecipe
+                    self.gui.setRecipesList(self.recipesList)
+                    self.gui.setIngredientInfo([])
+                    self.gui.setIngredientList([])
+                    self.gui.setRecipeName("")
+                    self.gui.root.update()
+                    
+                    print(self.recipesList[self.currentRecipeIndex[0]])
+                    
+                    self.currentIngredientList = []
+                    self.currentRecipeIndex = []
+                    self.currentRecipe = []
+                    self.currentIngredientIndex = []
+                    self.currentIngredientList = []
+                    
                     
                     
             #####################
@@ -223,6 +239,8 @@ class Controller:
             elif action=="load":
                 # Ask user for directory
                 directory = self.gui.getInfo("dir")
+                if directory == "":
+                    self.gui.errorMessage("Using current working directory for source directory")
                 
                 # Build recipe index
                 self.recipesList = self.model.loadRecipes(directory)

@@ -37,7 +37,7 @@ class GUI:
         if infoType == "URL":
             message = "Please input the URL."
         if infoType == "dir":
-            message = "Please input the directory."
+            message = "Please input the directory to load recipes from."
             
         popup = popupWindow(self.root, message)
         self.root.wait_window(popup.top)
@@ -90,16 +90,21 @@ class GUI:
     
     # Read ingredient name, quantity, unit, currently selected ingredient
     def setIngredientInfo(self, ingredient):
-        name = str(ingredient[0])
-        quantity = str(ingredient[1])
-        unit = str(ingredient[2])
-        
-        self.ingredientName.delete(0,END)
-        self.ingredientName.insert(0, name)
-        self.ingredientQuantity.delete(0,END)
-        self.ingredientQuantity.insert(0, quantity)
-        self.ingredientUnit.delete(0,END)
-        self.ingredientUnit.insert(0, unit)
+        if len(ingredient) > 0:
+            name = str(ingredient[0])
+            quantity = str(ingredient[1])
+            unit = str(ingredient[2])
+            
+            self.ingredientName.delete(0,END)
+            self.ingredientName.insert(0, name)
+            self.ingredientQuantity.delete(0,END)
+            self.ingredientQuantity.insert(0, quantity)
+            self.ingredientUnit.delete(0,END)
+            self.ingredientUnit.insert(0, unit)
+        else:
+            self.ingredientName.delete(0,END)
+            self.ingredientQuantity.delete(0,END)
+            self.ingredientUnit.delete(0,END)
     
     
     # Set the displayed list of recipes
@@ -117,6 +122,12 @@ class GUI:
         print(ingredientList)
         for ingredient in range(0,len(ingredientList)):
             self.ingredientsList.insert(END,str(ingredientList[ingredient][0]) + ", " + str(ingredientList[ingredient][1]) + " " + str(ingredientList[ingredient][2]))
+    
+    
+    # Set the displayed list of ingredients
+    def setRecipeName(self, recipeName):
+        self.recipeName.delete(0, END)
+        self.recipeName.insert(0,recipeName)
         
     
     # Set the displayed individual recipe
@@ -146,7 +157,7 @@ class GUI:
     def errorMessage(self, message):
         print(str(message))
         try: 
-            TK.messagebox.showinfo("Warning", str(message))
+            TK.messagebox.showinfo("Caution", str(message))
         except:
             messagebox.showinfo("Warning", str(message))
     
